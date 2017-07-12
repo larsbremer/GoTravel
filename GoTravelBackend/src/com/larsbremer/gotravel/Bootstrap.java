@@ -1,4 +1,4 @@
-package com.larsbremer.blueprint;
+package com.larsbremer.gotravel;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

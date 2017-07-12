@@ -1,4 +1,4 @@
-package com.larsbremer.blueprint.db;
+package com.larsbremer.gotravel.db;
 
 public class DBConnection {
 

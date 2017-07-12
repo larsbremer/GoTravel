@@ -1,4 +1,4 @@
-package com.larsbremer.blueprint.db;
+package com.larsbremer.gotravel.db;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import com.larsbremer.blueprint.model.Trip;
+import com.larsbremer.gotravel.model.Trip;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;

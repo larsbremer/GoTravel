@@ -1,17 +1,12 @@
-package com.larsbremer.blueprint.controller;
+package com.larsbremer.gotravel.controller;
 
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import com.larsbremer.blueprint.db.DBConnection;
-import com.larsbremer.blueprint.db.DBController;
-import com.larsbremer.blueprint.model.Trip;
+import com.larsbremer.gotravel.db.DBConnection;
+import com.larsbremer.gotravel.db.DBController;
+import com.larsbremer.gotravel.model.Trip;
 
 public class TripController {
-
-	private static final Logger logger = LogManager.getLogger(TripController.class);
 
 	public TripController() {
 

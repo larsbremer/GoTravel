@@ -1,4 +1,4 @@
-package com.larsbremer.blueprint.model;
+package com.larsbremer.gotravel.model;
 
 public class Activity extends Segment {
 
