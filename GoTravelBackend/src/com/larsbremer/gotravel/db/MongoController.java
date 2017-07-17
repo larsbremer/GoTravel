@@ -8,6 +8,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Trip;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -45,7 +46,19 @@ class MongoController implements DBController {
 	}
 
 	@Override
-	public List<Trip> searchTrip(Trip filter, Integer offset, Integer size) {
+	public Trip searchTrip(Trip filter) {
+
+		List<Trip> result = searchTrips(filter, 0, 1);
+
+		if (result.size() == 0) {
+			return null;
+		}
+
+		return result.get(0);
+	}
+
+	@Override
+	public List<Trip> searchTrips(Trip filter, Integer offset, Integer size) {
 
 		MongoCollection<Document> collection = getCollection(Collection.TRIP);
 
@@ -94,6 +107,28 @@ class MongoController implements DBController {
 		return trip;
 	}
 
+	private Flight getFlight(Document doc) {
+
+		Flight flight = new Flight();
+
+		flight.setId(doc.getObjectId(MONGO_ID).toHexString());
+		flight.setTripId(doc.getString("tripId"));
+
+		if (doc.containsKey("startDate")) {
+			Calendar c1 = Calendar.getInstance();
+			c1.setTimeInMillis(doc.getLong("startDate"));
+			flight.setStartDate(c1);
+		}
+
+		if (doc.containsKey("endDate")) {
+			Calendar c2 = Calendar.getInstance();
+			c2.setTimeInMillis(doc.getLong("endDate"));
+			flight.setEndDate(c2);
+		}
+
+		return flight;
+	}
+
 	private Bson getBsonFilter(Trip filter) {
 
 		BasicDBObject bsonFilter = new BasicDBObject();
@@ -106,7 +141,32 @@ class MongoController implements DBController {
 			bsonFilter.put(MONGO_ID, new ObjectId(filter.getId()));
 		}
 
-		bsonFilter.put("name", filter.getName());
+		if (filter.getName() != null) {
+			bsonFilter.put("name", filter.getName());
+		}
+
+		return bsonFilter;
+	}
+
+	private Bson getBsonFilter(Flight filter) {
+
+		BasicDBObject bsonFilter = new BasicDBObject();
+
+		if (filter == null) {
+			return bsonFilter;
+		}
+
+		if (filter.getId() != null) {
+			bsonFilter.put(MONGO_ID, new ObjectId(filter.getId()));
+		}
+
+		if (filter.getTripId() != null) {
+			bsonFilter.put("tripId", filter.getTripId());
+		}
+
+		if (filter.getNumber() != null) {
+			bsonFilter.put("number", filter.getNumber());
+		}
 
 		return bsonFilter;
 	}
@@ -115,4 +175,33 @@ class MongoController implements DBController {
 	public void close() {
 		mongoClient.close();
 	}
+
+	@Override
+	public List<Flight> searchFlights(Flight filter, Integer offset, Integer size) {
+
+		MongoCollection<Document> collection = getCollection(Collection.FLIGHT);
+
+		FindIterable<Document> search = collection.find();
+
+		Bson bsonFilter = getBsonFilter(filter);
+		if (filter != null) {
+			search.filter(bsonFilter);
+		}
+
+		if (offset != null && offset > 0) {
+			search.skip(offset);
+		}
+
+		if (size != null && size > 0) {
+			search.limit(size);
+		}
+
+		List<Flight> flights = new ArrayList<>();
+		for (Document doc : search) {
+			flights.add(getFlight(doc));
+		}
+
+		return flights;
+	}
+
 }
