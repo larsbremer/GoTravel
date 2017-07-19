@@ -3,11 +3,14 @@ package com.larsbremer.gotravel.db;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.DateSegment;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Trip;
 import com.mongodb.BasicDBObject;
@@ -22,7 +25,7 @@ class MongoController implements DBController {
 
 	private enum Collection {
 
-		ACCOMODATION, ACTIVITY, FLIGHT, TRIP;
+		ACCOMODATION, ACTIVITY, FLIGHT, TRIP, DATE_SEGMENT;
 
 		public String getCollectionName() {
 			return this.name().toLowerCase();
@@ -93,18 +96,40 @@ class MongoController implements DBController {
 		trip.setName(doc.getString("name"));
 
 		if (doc.containsKey("startDate")) {
-			Calendar c1 = Calendar.getInstance();
+			Calendar c1 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			c1.setTimeInMillis(doc.getLong("startDate"));
 			trip.setStartDate(c1);
 		}
 
 		if (doc.containsKey("endDate")) {
-			Calendar c2 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			c2.setTimeInMillis(doc.getLong("endDate"));
 			trip.setEndDate(c2);
 		}
 
 		return trip;
+	}
+
+	private DateSegment getDateSegment(Document doc) {
+
+		DateSegment dateSegment = new DateSegment();
+
+		dateSegment.setId(doc.getObjectId(MONGO_ID).toHexString());
+		dateSegment.setTripId(doc.getString("tripId"));
+
+		if (doc.containsKey("startDate")) {
+			Calendar c1 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			c1.setTimeInMillis(doc.getLong("startDate"));
+			dateSegment.setStartDate(c1);
+		}
+
+		if (doc.containsKey("endDate")) {
+			Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			c2.setTimeInMillis(doc.getLong("endDate"));
+			dateSegment.setEndDate(c2);
+		}
+
+		return dateSegment;
 	}
 
 	private Flight getFlight(Document doc) {
@@ -115,18 +140,40 @@ class MongoController implements DBController {
 		flight.setTripId(doc.getString("tripId"));
 
 		if (doc.containsKey("startDate")) {
-			Calendar c1 = Calendar.getInstance();
+			Calendar c1 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			c1.setTimeInMillis(doc.getLong("startDate"));
 			flight.setStartDate(c1);
 		}
 
 		if (doc.containsKey("endDate")) {
-			Calendar c2 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			c2.setTimeInMillis(doc.getLong("endDate"));
 			flight.setEndDate(c2);
 		}
 
 		return flight;
+	}
+
+	private Accomodation getAccomodation(Document doc) {
+
+		Accomodation accomodation = new Accomodation();
+
+		accomodation.setId(doc.getObjectId(MONGO_ID).toHexString());
+		accomodation.setTripId(doc.getString("tripId"));
+
+		if (doc.containsKey("startDate")) {
+			Calendar c1 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			c1.setTimeInMillis(doc.getLong("startDate"));
+			accomodation.setStartDate(c1);
+		}
+
+		if (doc.containsKey("endDate")) {
+			Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			c2.setTimeInMillis(doc.getLong("endDate"));
+			accomodation.setEndDate(c2);
+		}
+
+		return accomodation;
 	}
 
 	private Bson getBsonFilter(Trip filter) {
@@ -143,6 +190,25 @@ class MongoController implements DBController {
 
 		if (filter.getName() != null) {
 			bsonFilter.put("name", filter.getName());
+		}
+
+		return bsonFilter;
+	}
+
+	private Bson getBsonFilter(Accomodation filter) {
+
+		BasicDBObject bsonFilter = new BasicDBObject();
+
+		if (filter == null) {
+			return bsonFilter;
+		}
+
+		if (filter.getId() != null) {
+			bsonFilter.put(MONGO_ID, new ObjectId(filter.getId()));
+		}
+
+		if (filter.getTripId() != null) {
+			bsonFilter.put("tripId", filter.getTripId());
 		}
 
 		return bsonFilter;
@@ -174,6 +240,34 @@ class MongoController implements DBController {
 	@Override
 	public void close() {
 		mongoClient.close();
+	}
+
+	@Override
+	public List<Accomodation> searchAccomodations(Accomodation filter, Integer offset, Integer size) {
+
+		MongoCollection<Document> collection = getCollection(Collection.ACCOMODATION);
+
+		FindIterable<Document> search = collection.find();
+
+		Bson bsonFilter = getBsonFilter(filter);
+		if (filter != null) {
+			search.filter(bsonFilter);
+		}
+
+		if (offset != null && offset > 0) {
+			search.skip(offset);
+		}
+
+		if (size != null && size > 0) {
+			search.limit(size);
+		}
+
+		List<Accomodation> accomodations = new ArrayList<>();
+		for (Document doc : search) {
+			accomodations.add(getAccomodation(doc));
+		}
+
+		return accomodations;
 	}
 
 	@Override

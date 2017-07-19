@@ -47,14 +47,14 @@ app.controller('UserDetailCtrl', [ '$scope', '$routeParams', 'UserFactory', '$lo
 
 app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', function($scope, $http, $location) {
 
-  var tripId = $location.search().tripid
+  var tripId = $location.path()
 
   // callback for ng-click 'editUser':
-  $scope.editUser = function(userId) {
-    $location.path('/user-detail/' + userId);
-  };
+//  $scope.editUser = function(userId) {
+//    $location.path('/user-detail/' + userId);
+//  };
 
-  $http.get('/RestApplicationBlueprint/rest/trip/' + tripId + '?expand=true').then(function(tripResponse) {
+  $http.get('/GoTravelBackend/rest' + $location.path() + '?expand=true').then(function(tripResponse) {
     $scope.trip = []
     var trip = tripResponse.data
 

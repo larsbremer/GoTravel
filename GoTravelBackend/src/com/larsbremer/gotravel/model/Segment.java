@@ -33,6 +33,11 @@ public abstract class Segment {
 	}
 
 	public String getType() {
-		return this.getClass().getName().toLowerCase();
+		return this.getClass().getSimpleName().toLowerCase();
+	}
+
+	@Override
+	public String toString() {
+		return getStartDate().getTime() + " - " + getEndDate().getTime();
 	}
 }

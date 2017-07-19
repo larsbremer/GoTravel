@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class Trip extends Segment {
 
 	private String name;
-	private PriorityQueue<Segment> segments = new PriorityQueue<>(new SegmentComparator());
+	private List<Segment> segments = new ArrayList<>();
 
 	public String getName() {
 
@@ -17,11 +16,12 @@ public class Trip extends Segment {
 	}
 
 	public List<Segment> getSegments() {
-		return new ArrayList<>(segments);
+		return segments;
 	}
 
 	public void addSegment(Segment segment) {
 		this.segments.add(segment);
+		this.segments.sort(new SegmentComparator());
 	}
 
 	public void setName(String name) {
@@ -33,21 +33,18 @@ public class Trip extends Segment {
 		@Override
 		public int compare(Segment o1, Segment o2) {
 
-			Calendar o1StartDate = o1.getStartDate();
 			Calendar o1EndDate = o1.getEndDate();
-
-			Calendar o2StartDate = o2.getStartDate();
 			Calendar o2EndDate = o2.getEndDate();
 
-			if (o1EndDate.before(o2StartDate)) {
+			if (o1EndDate.before(o2EndDate)) {
 				return -1;
 			}
 
-			if (o2EndDate.after(o1StartDate)) {
+			if (o2EndDate.before(o1EndDate)) {
 				return 1;
 			}
 
-			throw new IllegalStateException();
+			throw new IllegalStateException("Two segments overlap: " + o1 + " and " + o2);
 		}
 
 	}

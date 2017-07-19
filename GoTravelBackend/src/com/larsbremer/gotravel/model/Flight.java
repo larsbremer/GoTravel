@@ -39,4 +39,9 @@ public class Flight extends Segment {
 		this.number = number;
 	}
 
+	@Override
+	public String toString() {
+		return "Flight: " + number + ", " + super.toString();
+	}
+
 }
