@@ -15,6 +15,7 @@ public class SegmentController {
 		endOfDay.set(Calendar.HOUR_OF_DAY, 23);
 		endOfDay.set(Calendar.MINUTE, 59);
 		endOfDay.set(Calendar.SECOND, 59);
+		endOfDay.set(Calendar.MILLISECOND, 999);
 
 		return endOfDay;
 	}
@@ -33,6 +34,7 @@ public class SegmentController {
 		beginningOfDay.set(Calendar.HOUR_OF_DAY, 0);
 		beginningOfDay.set(Calendar.MINUTE, 0);
 		beginningOfDay.set(Calendar.SECOND, 0);
+		beginningOfDay.set(Calendar.MILLISECOND, 0);
 
 		return beginningOfDay;
 	}
@@ -46,11 +48,17 @@ public class SegmentController {
 	public static boolean segmentsFollowEachOther(Segment s1, Segment s2) {
 
 		Calendar s1EndDate = s1.getEndDate();
+		long s1EndInSeconds = s1EndDate.getTimeInMillis() / 1000;
+		long nextSegmentStartSeconds = s1EndInSeconds + 1;
+
 		Calendar s2StartDate = s2.getStartDate();
+		long s2StartInSeconds = s2StartDate.getTimeInMillis() / 1000;
 
-		s1EndDate.add(Calendar.SECOND, 1);
+		if (nextSegmentStartSeconds == s2StartInSeconds) {
+			return true;
+		}
 
-		return s1EndDate.equals(s2StartDate);
+		return false;
 	}
 
 	public static boolean doSegmentsOverlap(Segment s1, Segment s2) {

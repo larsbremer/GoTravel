@@ -13,16 +13,15 @@ import com.larsbremer.gotravel.model.Trip;
 
 public class TripController {
 
-	public TripController() {
+	DBController dbController = null;
 
+	public TripController() {
+		dbController = DBConnection.getDatabaseController();
 	}
 
 	public List<Trip> getTrips() throws Exception {
 
-		try (DBController dbController = DBConnection.getDatabaseController()) {
-
-			return dbController.searchTrips(null, null, null);
-		}
+		return dbController.searchTrips(null, null, null);
 	}
 
 	public Trip getTrip(String id) throws Exception {
@@ -32,23 +31,20 @@ public class TripController {
 
 	public Trip getTrip(String id, boolean expand) throws Exception {
 
-		try (DBController dbController = DBConnection.getDatabaseController()) {
+		Trip tripFilter = new Trip();
+		tripFilter.setId(id);
 
-			Trip tripFilter = new Trip();
-			tripFilter.setId(id);
+		Trip trip = dbController.searchTrip(tripFilter);
 
-			Trip trip = dbController.searchTrip(tripFilter);
-
-			if (trip == null) {
-				return trip;
-			}
-
-			if (expand) {
-				expand(trip);
-			}
-
+		if (trip == null) {
 			return trip;
 		}
+
+		if (expand) {
+			expand(trip);
+		}
+
+		return trip;
 	}
 
 	private void expand(Trip trip) throws Exception {
@@ -153,23 +149,21 @@ public class TripController {
 
 	private List<Flight> getFlightsForTrip(String tripId) throws Exception {
 
-		try (DBController dbController = DBConnection.getDatabaseController()) {
+		Flight flightFilter = new Flight();
+		flightFilter.setTripId(tripId);
 
-			Flight flightFilter = new Flight();
-			flightFilter.setTripId(tripId);
-
-			return dbController.searchFlights(flightFilter, -1, -1);
-		}
+		return dbController.searchFlights(flightFilter, -1, -1);
 	}
 
 	private List<Accomodation> getAccomodationsForTrip(String tripId) throws Exception {
 
-		try (DBController dbController = DBConnection.getDatabaseController()) {
+		Accomodation accomodationFilter = new Accomodation();
+		accomodationFilter.setTripId(tripId);
 
-			Accomodation accomodationFilter = new Accomodation();
-			accomodationFilter.setTripId(tripId);
+		return dbController.searchAccomodations(accomodationFilter, -1, -1);
+	}
 
-			return dbController.searchAccomodations(accomodationFilter, -1, -1);
-		}
+	public void createTrip(Trip trip) {
+		dbController.createTrip(trip);
 	}
 }
