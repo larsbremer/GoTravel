@@ -21,4 +21,9 @@ public class Location {
 		this.country = country;
 	}
 
+	@Override
+	public String toString() {
+		return "Location: [city: " + city + "], [country: " + country + "]";
+	}
+
 }

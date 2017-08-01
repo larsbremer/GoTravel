@@ -29,4 +29,9 @@ public class Accomodation extends Segment {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+
+	@Override
+	public String toString() {
+		return "Accomodation: [name: " + name + "]" + super.toString();
+	}
 }

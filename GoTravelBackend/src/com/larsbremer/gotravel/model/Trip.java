@@ -48,4 +48,9 @@ public class Trip extends Segment {
 		}
 
 	}
+
+	@Override
+	public String toString() {
+		return "Trip: [name: " + name + "]" + super.toString();
+	}
 }

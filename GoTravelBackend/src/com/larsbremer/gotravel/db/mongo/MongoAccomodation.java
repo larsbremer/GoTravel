@@ -1,38 +1,22 @@
 package com.larsbremer.gotravel.db.mongo;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.larsbremer.gotravel.db.mongo.MongoConnection.Collection;
 import com.larsbremer.gotravel.model.Accomodation;
-import com.larsbremer.gotravel.model.Location;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 public class MongoAccomodation {
 
-	private Accomodation parseAccomodationFields(Document doc) {
-
-		Accomodation accomodation = new Accomodation();
-
-		accomodation.setTripId(doc.getString("tripId"));
-		accomodation.setName(doc.getString("name"));
-
-		Document locationDoc = (Document) doc.get("location");
-		Location location = MongoLocation.parseLocationFields(locationDoc);
-		accomodation.setLocation(location);
-
-		MongoSegment.addSegmentFields(accomodation, doc);
-
-		return accomodation;
-	}
-
-	public List<Accomodation> searchAccomodations(Accomodation filter, Integer offset, Integer size)
-			throws JsonProcessingException {
+	public List<Accomodation> search(Accomodation filter, Integer offset, Integer size)
+			throws IOException, ParseException {
 
 		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.ACCOMODATION);
 
@@ -53,10 +37,21 @@ public class MongoAccomodation {
 
 		List<Accomodation> accomodations = new ArrayList<>();
 		for (Document doc : search) {
-			accomodations.add(parseAccomodationFields(doc));
+			Accomodation accomodation = MongoParser.getObject(doc, Accomodation.class);
+			accomodations.add(accomodation);
 		}
 
 		return accomodations;
+	}
+
+	public Accomodation create(Accomodation accomodation) throws IOException, ParseException {
+
+		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.ACCOMODATION);
+
+		Document doc = MongoParser.convertPojoToDocument(accomodation);
+		collection.insertOne(doc);
+
+		return MongoParser.getObject(doc, Accomodation.class);
 	}
 
 }

@@ -38,6 +38,17 @@ public abstract class Segment {
 
 	@Override
 	public String toString() {
-		return getStartDate().getTime() + " - " + getEndDate().getTime();
+
+		String startDateString = "n/a";
+		if (this.startDate != null) {
+			startDateString = getStartDate().getTime().toString();
+		}
+
+		String endDateString = "n/a";
+		if (this.endDate != null) {
+			endDateString = getEndDate().getTime().toString();
+		}
+
+		return ", [id: " + id + "], [time: " + startDateString + " - " + endDateString + "]";
 	}
 }

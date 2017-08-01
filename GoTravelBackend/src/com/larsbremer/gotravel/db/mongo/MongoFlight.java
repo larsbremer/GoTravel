@@ -1,40 +1,21 @@
 package com.larsbremer.gotravel.db.mongo;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.larsbremer.gotravel.db.mongo.MongoConnection.Collection;
 import com.larsbremer.gotravel.model.Flight;
-import com.larsbremer.gotravel.model.Location;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 public class MongoFlight {
 
-	private Flight parseFlightFields(Document doc) {
-
-		Flight flight = new Flight();
-
-		flight.setTripId(doc.getString("tripId"));
-
-		Document departureLocationDoc = (Document) doc.get("departureLocation");
-		Location departureLocation = MongoLocation.parseLocationFields(departureLocationDoc);
-		flight.setDepartureLocation(departureLocation);
-
-		Document arrivalLocationDoc = (Document) doc.get("arrivalLocation");
-		Location arrivalLocation = MongoLocation.parseLocationFields(arrivalLocationDoc);
-		flight.setArrivalLocation(arrivalLocation);
-
-		MongoSegment.addSegmentFields(flight, doc);
-
-		return flight;
-	}
-
-	public List<Flight> searchFlights(Flight filter, Integer offset, Integer size) throws JsonProcessingException {
+	public List<Flight> search(Flight filter, Integer offset, Integer size) throws IOException, ParseException {
 
 		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.FLIGHT);
 
@@ -55,10 +36,21 @@ public class MongoFlight {
 
 		List<Flight> flights = new ArrayList<>();
 		for (Document doc : search) {
-			flights.add(parseFlightFields(doc));
+			Flight flight = MongoParser.getObject(doc, Flight.class);
+			flights.add(flight);
 		}
 
 		return flights;
+	}
+
+	public Flight create(Flight flight) throws ParseException, IOException {
+
+		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.FLIGHT);
+
+		Document doc = MongoParser.convertPojoToDocument(flight);
+		collection.insertOne(doc);
+
+		return MongoParser.getObject(doc, Flight.class);
 	}
 
 }

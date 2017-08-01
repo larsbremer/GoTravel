@@ -41,7 +41,8 @@ public class Flight extends Segment {
 
 	@Override
 	public String toString() {
-		return "Flight: " + number + ", " + super.toString();
+		return "Flight: [number: " + number + "], [departure: " + departureLocation + "], [arrival: " + arrivalLocation
+				+ "]" + super.toString();
 	}
 
 }

@@ -1,6 +1,10 @@
 package com.larsbremer.gotravel.db.mongo;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 import org.bson.Document;
@@ -17,6 +21,8 @@ import com.mongodb.BasicDBObject;
 public class MongoParser {
 
 	private static final String MONGO_ID = "_id";
+	private static final String DATE_PREFIX = "#date:";
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("'" + DATE_PREFIX + "'yyyy-MM-dd'T'HH:mm:ssZ");
 
 	public static Bson convertPojoToBson(Object obj) throws JsonProcessingException {
 
@@ -32,11 +38,13 @@ public class MongoParser {
 		return bsonFilter;
 	}
 
-	public static Document convertPojoToDocument(Object obj) throws JsonProcessingException {
+	public static Document convertPojoToDocument(Object obj) throws JsonProcessingException, ParseException {
 
 		String jsonString = parsePojoToString(obj);
 
 		Document doc = Document.parse(jsonString);
+
+		convertDatePlaceholdersToDate(doc);
 
 		if (obj instanceof Segment) {
 			convertToMongoId(obj, doc);
@@ -44,6 +52,42 @@ public class MongoParser {
 		}
 
 		return doc;
+	}
+
+	private static void convertDatePlaceholdersToDate(Document doc) throws ParseException {
+		for (String key : new ArrayList<>(doc.keySet())) {
+
+			Object value = doc.get(key);
+
+			if (!(value instanceof String)) {
+				continue;
+			}
+
+			String stringValue = (String) value;
+			if (stringValue.startsWith(DATE_PREFIX)) {
+
+				Date date = sdf.parse(stringValue);
+
+				doc.remove(key);
+				doc.append(key, date);
+			}
+		}
+	}
+
+	private static void convertDatesToDatePlaceholders(Document doc) throws ParseException {
+
+		for (String key : new ArrayList<>(doc.keySet())) {
+
+			Object value = doc.get(key);
+
+			if (value instanceof Date) {
+
+				String dateString = sdf.format((Date) value);
+
+				doc.remove(key);
+				doc.append(key, dateString);
+			}
+		}
 	}
 
 	private static void convertToMongoId(Object obj, Map<String, Object> bsonFilter) {
@@ -62,12 +106,15 @@ public class MongoParser {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		mapper.setSerializationInclusion(Include.NON_EMPTY);
 
+		mapper.setDateFormat(sdf);
+
 		String jsonString = mapper.writeValueAsString(obj);
 
 		return jsonString;
 	}
 
-	public static <T> T getObject(Document doc, Class<T> targetType) throws JsonProcessingException, IOException {
+	public static <T> T getObject(Document doc, Class<T> targetType)
+			throws JsonProcessingException, IOException, ParseException {
 
 		if (doc.containsKey(MONGO_ID)) {
 			String mongoId = doc.getObjectId(MONGO_ID).toHexString();
@@ -77,7 +124,13 @@ public class MongoParser {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		return mapper.readValue(doc.toJson(), targetType);
+		mapper.setDateFormat(sdf);
+
+		convertDatesToDatePlaceholders(doc);
+
+		String json = doc.toJson();
+
+		return mapper.readValue(json, targetType);
 	}
 
 }

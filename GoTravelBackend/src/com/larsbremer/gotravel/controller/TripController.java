@@ -6,6 +6,7 @@ import java.util.List;
 import com.larsbremer.gotravel.db.DBConnection;
 import com.larsbremer.gotravel.db.DBController;
 import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.DateSegment;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Segment;
@@ -54,6 +55,8 @@ public class TripController {
 		expandDateSegments(trip);
 
 		expandAccomodations(trip);
+
+		expandActivities(trip);
 
 	}
 
@@ -114,6 +117,34 @@ public class TripController {
 		addAccomodationsToTrip(trip, accomodations);
 	}
 
+	private void expandActivities(Trip trip) throws Exception {
+
+		if (trip == null) {
+			return;
+		}
+
+		List<Activity> activities = getActivitiesForTrip(trip.getId());
+
+		addActivitiesToTrip(trip, activities);
+	}
+
+	private void addActivitiesToTrip(Trip trip, List<Activity> activities) {
+
+		for (Activity activity : activities) {
+			addActivityToTrip(trip, activity);
+		}
+	}
+
+	private void addActivityToTrip(Trip trip, Activity activity) {
+
+		List<Segment> segments = trip.getSegments();
+		for (Segment segment : segments) {
+			if (segment instanceof DateSegment && SegmentController.doSegmentsOverlap(segment, activity)) {
+				((DateSegment) segment).addActivity(activity);
+			}
+		}
+	}
+
 	private void addAccomodationsToTrip(Trip trip, List<Accomodation> accomodations) {
 
 		for (Accomodation accomodation : accomodations) {
@@ -163,7 +194,23 @@ public class TripController {
 		return dbController.searchAccomodations(accomodationFilter, -1, -1);
 	}
 
-	public void createTrip(Trip trip) {
-		dbController.createTrip(trip);
+	private List<Activity> getActivitiesForTrip(String tripId) throws Exception {
+
+		Activity activityFilter = new Activity();
+		activityFilter.setTripId(tripId);
+
+		return dbController.searchActivities(activityFilter, -1, -1);
+	}
+
+	public Trip createTrip(Trip trip) {
+		return dbController.createTrip(trip);
+	}
+
+	public Accomodation createAccomodation(Accomodation accomodation) {
+		return dbController.createAccomodation(accomodation);
+	}
+
+	public Flight createFlight(Flight flight) {
+		return dbController.createFlight(flight);
 	}
 }

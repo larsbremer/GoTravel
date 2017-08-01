@@ -1,6 +1,8 @@
 package com.larsbremer.gotravel.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.larsbremer.gotravel.controller.SegmentController;
 
@@ -8,6 +10,7 @@ public class DateSegment extends Segment {
 
 	private Accomodation eveningAccomodation;
 	private String tripId;
+	private List<Activity> activities = new ArrayList<>();
 
 	public DateSegment() {
 
@@ -36,6 +39,18 @@ public class DateSegment extends Segment {
 
 	public void setEveningAccomodation(Accomodation eveningAccomodation) {
 		this.eveningAccomodation = eveningAccomodation;
+	}
+
+	public List<Activity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List<Activity> activities) {
+		this.activities = activities;
+	}
+
+	public void addActivity(Activity activity) {
+		this.activities.add(activity);
 	}
 
 	@Override

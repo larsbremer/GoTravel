@@ -1,13 +1,13 @@
 package com.larsbremer.gotravel.db.mongo;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.larsbremer.gotravel.db.mongo.MongoConnection.Collection;
 import com.larsbremer.gotravel.model.Trip;
 import com.mongodb.client.FindIterable;
@@ -15,18 +15,7 @@ import com.mongodb.client.MongoCollection;
 
 public class MongoTrip {
 
-	private Trip parseTrip(Document doc) {
-
-		Trip trip = new Trip();
-
-		trip.setName(doc.getString("name"));
-
-		MongoSegment.addSegmentFields(trip, doc);
-
-		return trip;
-	}
-
-	public List<Trip> searchTrips(Trip filter, Integer offset, Integer size) throws JsonProcessingException {
+	public List<Trip> search(Trip filter, Integer offset, Integer size) throws IOException, ParseException {
 
 		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.TRIP);
 
@@ -47,13 +36,13 @@ public class MongoTrip {
 
 		List<Trip> trips = new ArrayList<>();
 		for (Document doc : search) {
-			trips.add(parseTrip(doc));
+			trips.add(MongoParser.getObject(doc, Trip.class));
 		}
 
 		return trips;
 	}
 
-	public Trip createTrip(Trip trip) throws IOException {
+	public Trip create(Trip trip) throws IOException, ParseException {
 
 		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.TRIP);
 
