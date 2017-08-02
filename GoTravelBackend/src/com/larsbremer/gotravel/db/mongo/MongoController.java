@@ -89,4 +89,13 @@ public class MongoController implements DBController {
 			throw new ParsingException(e);
 		}
 	}
+
+	@Override
+	public Activity createActivity(Activity activity) {
+		try {
+			return new MongoActivity().create(activity);
+		} catch (IOException | ParseException e) {
+			throw new ParsingException(e);
+		}
+	}
 }

@@ -70,4 +70,12 @@ public class SegmentController {
 		return false;
 	}
 
+	public static boolean doesSegmentContainDate(Segment segment, Calendar date) {
+		boolean dateIsBeforeSegment = date.before(segment.getStartDate());
+		boolean dateIsAfterSegment = date.after(segment.getEndDate());
+		boolean dateIsOutsideOfSegment = dateIsBeforeSegment || dateIsAfterSegment;
+
+		return !dateIsOutsideOfSegment;
+	}
+
 }

@@ -139,7 +139,8 @@ public class TripController {
 
 		List<Segment> segments = trip.getSegments();
 		for (Segment segment : segments) {
-			if (segment instanceof DateSegment && SegmentController.doSegmentsOverlap(segment, activity)) {
+			if (segment instanceof DateSegment
+					&& SegmentController.doesSegmentContainDate(segment, activity.getDate())) {
 				((DateSegment) segment).addActivity(activity);
 			}
 		}
@@ -212,5 +213,9 @@ public class TripController {
 
 	public Flight createFlight(Flight flight) {
 		return dbController.createFlight(flight);
+	}
+
+	public Activity createActivity(Activity activity) {
+		return dbController.createActivity(activity);
 	}
 }

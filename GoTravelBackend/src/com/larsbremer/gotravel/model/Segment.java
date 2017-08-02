@@ -2,19 +2,10 @@ package com.larsbremer.gotravel.model;
 
 import java.util.Calendar;
 
-public abstract class Segment {
+public abstract class Segment extends DatabaseItem {
 
-	private String id;
 	private Calendar startDate;
 	private Calendar endDate;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public Calendar getStartDate() {
 		return startDate;
@@ -49,6 +40,6 @@ public abstract class Segment {
 			endDateString = getEndDate().getTime().toString();
 		}
 
-		return ", [id: " + id + "], [time: " + startDateString + " - " + endDateString + "]";
+		return ", [time: " + startDateString + " - " + endDateString + "]" + super.toString();
 	}
 }

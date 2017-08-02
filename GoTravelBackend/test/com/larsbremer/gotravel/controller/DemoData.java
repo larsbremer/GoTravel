@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Location;
 import com.larsbremer.gotravel.model.Trip;
@@ -19,23 +20,55 @@ public class DemoData {
 	private static void createDemoData() {
 
 		// Trip
-		Trip createdTrip = createTrip(createDate(2017, 9, 20, 10, 0), createDate(2017, 10, 3, 21, 0));
+		Trip createdTrip = createTrip(createDate(2017, 10, 20, 10, 0), createDate(2017, 11, 3, 21, 0));
 		System.out.println(createdTrip);
 
 		// Acccomodation
 		Accomodation createdAccomodation = createAccomodation(createdTrip.getId(), createLocation("Lima", "Peru"),
-				createDate(2017, 9, 28, 12, 0), createDate(2017, 10, 1, 10, 0));
+				createDate(2017, 10, 28, 12, 0), createDate(2017, 11, 1, 10, 0));
 		System.out.println(createdAccomodation);
 
 		// Flight
 		Flight createdArrivalFlight = createFlight(createdTrip.getId(), createLocation("Luxembourg", "Luxembourg"),
-				createDate(2017, 9, 20, 13, 0), createLocation("Lima", "Peru"), createDate(2017, 9, 20, 20, 0));
+				createDate(2017, 10, 20, 13, 0), createLocation("Lima", "Peru"), createDate(2017, 10, 20, 20, 0));
 		System.out.println(createdArrivalFlight);
 
 		// Flight
 		Flight createdDepartureFlight = createFlight(createdTrip.getId(), createLocation("Luxembourg", "Luxembourg"),
-				createDate(2017, 10, 3, 2, 0), createLocation("Lima", "Peru"), createDate(2017, 10, 3, 15, 0));
+				createDate(2017, 11, 3, 2, 0), createLocation("Lima", "Peru"), createDate(2017, 11, 3, 15, 0));
 		System.out.println(createdDepartureFlight);
+
+		// Activity
+		String note = "Inka Trail: Day 1";
+		Activity createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 22, 12, 00), note);
+		System.out.println(createdActivity);
+
+		note = "Inka Trail: Day 2";
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 23, 12, 00), note);
+		System.out.println(createdActivity);
+
+		note = "Inka Trail: Day 3";
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 24, 12, 00), note);
+		System.out.println(createdActivity);
+
+		note = "Inka Trail: Day 4";
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 12, 00), note);
+		System.out.println(createdActivity);
+
+		note = "Train back to Cuzco";
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 16, 00), note);
+		System.out.println(createdActivity);
+	}
+
+	private static Activity createActivity(String tripId, Calendar date, String note) {
+
+		Activity activity = new Activity();
+		activity.setDate(date);
+		activity.setTripId(tripId);
+		activity.setNote(note);
+
+		Activity createdActivity = tripController.createActivity(activity);
+		return createdActivity;
 
 	}
 
@@ -49,7 +82,7 @@ public class DemoData {
 
 	private static Calendar createDate(int year, int month, int day, int hour, int minute) {
 		Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-		endDate.set(year, month, day, hour, minute);
+		endDate.set(year, month - 1, day, hour, minute);
 		return endDate;
 	}
 

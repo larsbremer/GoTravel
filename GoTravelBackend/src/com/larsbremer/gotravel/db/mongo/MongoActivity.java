@@ -43,4 +43,14 @@ public class MongoActivity {
 		return activities;
 	}
 
+	public Activity create(Activity activity) throws ParseException, IOException {
+
+		MongoCollection<Document> collection = MongoConnection.getDatabaseCollection(Collection.ACTIVITY);
+
+		Document doc = MongoParser.convertPojoToDocument(activity);
+		collection.insertOne(doc);
+
+		return MongoParser.getObject(doc, Activity.class);
+	}
+
 }

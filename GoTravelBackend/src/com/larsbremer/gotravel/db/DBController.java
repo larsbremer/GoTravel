@@ -24,4 +24,6 @@ public interface DBController {
 	Accomodation createAccomodation(Accomodation accomodation);
 
 	Flight createFlight(Flight flight);
+
+	Activity createActivity(Activity activity);
 }
