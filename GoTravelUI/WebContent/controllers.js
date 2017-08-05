@@ -50,41 +50,31 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
   var tripId = $location.path()
 
   // callback for ng-click 'editUser':
-//  $scope.editUser = function(userId) {
-//    $location.path('/user-detail/' + userId);
-//  };
+  // $scope.editUser = function(userId) {
+  // $location.path('/user-detail/' + userId);
+  // };
 
   $http.get('/GoTravelBackend/rest' + $location.path() + '?expand=true').then(function(tripResponse) {
     $scope.trip = []
     var trip = tripResponse.data
 
+    var timeFormat = "YYYY-MM-DD'T'HH:mm:ss.SSSZ"
+
     for ( var segmentId in trip.segments) {
+
       var startDate = trip.segments[segmentId].startDate
-      var startDateObj = new Date(startDate)
+      var startDateObj = moment.utc(startDate, timeFormat)
 
       var endDate = trip.segments[segmentId].endDate
-      var endDateObj = new Date(endDate)
+      var endDateObj = moment.utc(endDate, timeFormat)
 
-      var options = {
-	hour : 'numeric',
-	minute : 'numeric',
-	timeZone : 'UTC'
-      };
+      trip.segments[segmentId].startDate = startDateObj.format('HH:mm');
+      trip.segments[segmentId].endDate = endDateObj.format('HH:mm');
 
-      trip.segments[segmentId].startDate = startDateObj.toLocaleString('de-DE', options);
-      trip.segments[segmentId].endDate = endDateObj.toLocaleString('de-DE', options);
+      trip.segments[segmentId].startDateReduced = startDateObj.format('ddd, DD.MM.');
+      trip.segments[segmentId].endDateReduced = endDateObj.format('ddd, DD.MM.');
 
-      var reducedOptions = {
-	month : 'numeric',
-	day : 'numeric',
-	timeZone : 'UTC',
-	weekday : 'short'
-      };
-
-      trip.segments[segmentId].startDateReduced = startDateObj.toLocaleString('de-DE', reducedOptions);
-      trip.segments[segmentId].endDateReduced = endDateObj.toLocaleString('de-DE', reducedOptions);
-
-      var durationMinutes = Math.round((endDateObj.getTime() - startDateObj.getTime()) / (1000 * 60));
+      var durationMinutes = Math.round((endDateObj.format('x') - startDateObj.format('x')) / (1000 * 60));
 
       var days = Math.floor(durationMinutes / (24 * 60))
       var remainingMinutes = durationMinutes - (days * 24 * 60)

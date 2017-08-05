@@ -28,15 +28,31 @@ public class DemoData {
 				createDate(2017, 10, 28, 12, 0), createDate(2017, 11, 1, 10, 0));
 		System.out.println(createdAccomodation);
 
-		// Flight
-		Flight createdArrivalFlight = createFlight(createdTrip.getId(), createLocation("Luxembourg", "Luxembourg"),
-				createDate(2017, 10, 20, 13, 0), createLocation("Lima", "Peru"), createDate(2017, 10, 20, 20, 0));
-		System.out.println(createdArrivalFlight);
+		// Location
+		Location london = createLocation("London", "United Kingdom");
+		Location luxembourg = createLocation("Luxembourg", "Luxembourg");
+		Location newyork = createLocation("New York", "United States of America");
+		Location lima = createLocation("Lima", "Peru");
+		Location miami = createLocation("Miami", "United States of America");
 
-		// Flight
-		Flight createdDepartureFlight = createFlight(createdTrip.getId(), createLocation("Luxembourg", "Luxembourg"),
-				createDate(2017, 11, 3, 2, 0), createLocation("Lima", "Peru"), createDate(2017, 11, 3, 15, 0));
-		System.out.println(createdDepartureFlight);
+		// Flights
+		System.out.println(createFlight(createdTrip.getId(), luxembourg, createDate(2017, 10, 17, 11, 30), london,
+				createDate(2017, 10, 17, 12, 0)));
+
+		System.out.println(createFlight(createdTrip.getId(), london, createDate(2017, 10, 17, 16, 5), newyork,
+				createDate(2017, 10, 17, 19, 5)));
+
+		System.out.println(createFlight(createdTrip.getId(), newyork, createDate(2017, 10, 17, 23, 25), lima,
+				createDate(2017, 10, 18, 5, 55)));
+
+		System.out.println(createFlight(createdTrip.getId(), lima, createDate(2017, 11, 2, 6, 45), miami,
+				createDate(2017, 11, 2, 13, 42)));
+
+		System.out.println(createFlight(createdTrip.getId(), miami, createDate(2017, 11, 2, 18, 25), london,
+				createDate(2017, 11, 3, 6, 45)));
+
+		System.out.println(createFlight(createdTrip.getId(), london, createDate(2017, 11, 3, 8, 5), luxembourg,
+				createDate(2017, 11, 3, 10, 25)));
 
 		// Activity
 		String note = "Inka Trail: Day 1";
