@@ -7,9 +7,11 @@ import com.larsbremer.gotravel.db.DBConnection;
 import com.larsbremer.gotravel.db.DBController;
 import com.larsbremer.gotravel.model.Accomodation;
 import com.larsbremer.gotravel.model.Activity;
+import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.DateSegment;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Segment;
+import com.larsbremer.gotravel.model.TrainRide;
 import com.larsbremer.gotravel.model.Trip;
 
 public class TripController {
@@ -50,7 +52,7 @@ public class TripController {
 
 	private void expand(Trip trip) throws Exception {
 
-		expandFlights(trip);
+		expandTransportations(trip);
 
 		expandDateSegments(trip);
 
@@ -157,13 +159,14 @@ public class TripController {
 
 		List<Segment> segments = trip.getSegments();
 		for (Segment segment : segments) {
-			if (segment instanceof DateSegment && SegmentController.doSegmentsOverlap(segment, accomodation)) {
+			if (segment instanceof DateSegment && SegmentController.isEndOfDay(segment.getEndDate())
+					&& SegmentController.doSegmentsOverlap(segment, accomodation)) {
 				((DateSegment) segment).setEveningAccomodation(accomodation);
 			}
 		}
 	}
 
-	private void expandFlights(Trip trip) throws Exception {
+	private void expandTransportations(Trip trip) throws Exception {
 
 		if (trip == null) {
 			return;
@@ -171,6 +174,12 @@ public class TripController {
 
 		List<Flight> flights = getFlightsForTrip(trip.getId());
 		addSegmentsToTrip(trip, flights);
+
+		List<TrainRide> trainRides = getTrainRidesForTrip(trip.getId());
+		addSegmentsToTrip(trip, trainRides);
+
+		List<BusRide> busRides = getBusRidesForTrip(trip.getId());
+		addSegmentsToTrip(trip, busRides);
 	}
 
 	private void addSegmentsToTrip(Trip trip, List<? extends Segment> segments) {
@@ -185,6 +194,22 @@ public class TripController {
 		flightFilter.setTripId(tripId);
 
 		return dbController.searchFlights(flightFilter, -1, -1);
+	}
+
+	private List<TrainRide> getTrainRidesForTrip(String tripId) throws Exception {
+
+		TrainRide trainRideFilter = new TrainRide();
+		trainRideFilter.setTripId(tripId);
+
+		return dbController.searchTrainRides(trainRideFilter, -1, -1);
+	}
+
+	private List<BusRide> getBusRidesForTrip(String tripId) {
+
+		BusRide busRideFilter = new BusRide();
+		busRideFilter.setTripId(tripId);
+
+		return dbController.searchBusRides(busRideFilter, -1, -1);
 	}
 
 	private List<Accomodation> getAccomodationsForTrip(String tripId) throws Exception {
@@ -215,7 +240,16 @@ public class TripController {
 		return dbController.createFlight(flight);
 	}
 
+	public TrainRide createTrainRide(TrainRide trainRide) {
+		return dbController.createTrainRide(trainRide);
+	}
+
+	public BusRide createBus(BusRide busRide) {
+		return dbController.createBusRide(busRide);
+	}
+
 	public Activity createActivity(Activity activity) {
 		return dbController.createActivity(activity);
 	}
+
 }

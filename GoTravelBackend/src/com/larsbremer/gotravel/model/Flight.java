@@ -1,34 +1,16 @@
 package com.larsbremer.gotravel.model;
 
-public class Flight extends Segment {
+public class Flight extends Transportation {
 
 	private String number;
-	private String tripId;
-	private Location departureLocation;
-	private Location arrivalLocation;
+	private String airline;
 
-	public Location getDepartureLocation() {
-		return departureLocation;
+	public String getAirline() {
+		return airline;
 	}
 
-	public void setDepartureLocation(Location departureLocation) {
-		this.departureLocation = departureLocation;
-	}
-
-	public Location getArrivalLocation() {
-		return arrivalLocation;
-	}
-
-	public void setArrivalLocation(Location arrivalLocation) {
-		this.arrivalLocation = arrivalLocation;
-	}
-
-	public String getTripId() {
-		return tripId;
-	}
-
-	public void setTripId(String tripId) {
-		this.tripId = tripId;
+	public void setAirline(String airline) {
+		this.airline = airline;
 	}
 
 	public String getNumber() {
@@ -41,8 +23,7 @@ public class Flight extends Segment {
 
 	@Override
 	public String toString() {
-		return "Flight: [number: " + number + "], [departure: " + departureLocation + "], [arrival: " + arrivalLocation
-				+ "]" + super.toString();
+		return "Flight: [number: " + number + "] " + super.toString();
 	}
 
 }

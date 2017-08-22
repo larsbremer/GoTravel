@@ -76,7 +76,7 @@ p.flight-secondline-pos {
 	width: 15px;
 	height: 15px;
 	left: 10px;
-	top: 10px;
+	top: 12px;
 }
 
 td.accomodation {
@@ -138,94 +138,5 @@ td.date {
 	href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 </head>
 <body>
-	<br>
-
-	<!-- 
-	<div ng-controller="ModalDemoCtrl as ctrl" class="modal-demo">
-		<script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">Activity</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
- <form novalidate="novalidate" class="form-horizontal">
-        <div class="control-group">
-            <label class="control-label" for="inputFirstName">First name:</label>
-            <div class="controls">
-                <input type="text" id="inputFirstName" ng-model="user.firstName"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputLastName">Last name:</label>
-            <div class="controls">
-                <input type="text" id="inputLastName" ng-model="user.lastName"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <a ng-click="cancel()" class="btn btn-small">cancel</a>
-                <a ng-click="updateUser()" class="btn btn-small btn-primary">update user</a>
-            </div>
-        </div>
-    </form>
-        </div>
-    </script>
-
-
-		<div ng-view></div>
-		
-		 -->
-	<table ng-controller="TripCtrl">
-
-		<tr ng-repeat="segment in trip">
-		<!--
-			<td class=date
-				ng-if="segment.startDateReduced != segment.endDateReduced"><p
-					class="main-date">
-					{{segment.startDateReduced}}<br>-<br>{{segment.endDateReduced}}
-				</p></td>
-			
-			<td class=date
-				ng-if="segment.startDateReduced != null && segment.startDateReduced == segment.endDateReduced"><p
-					class="main-date">{{segment.startDateReduced}}</p></td>
-			<td class=date ng-if="segment.type == 'accomodation'"></td>
--->
-
-			<!-- flight -->
-			<!--
-				<td class="segments flight" ng-if="segment.type == 'flight'">
-					<p class="font-small-gray flight-header-pos">{{segment.startDate}}
-						- {{segment.endDate}}</p>
-					<p class="font-large-gray flight-firstline-pos">
-						{{segment.departureLocation.city}},
-						{{segment.departureLocation.country}}</p>
-					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
-						{{segment.arrivalLocation.country}}</p>
-					<div class="circle circle-first-pos"></div>
-					<div class="circle circle-second-pos"></div>
-					<div class="line"></div> <img src="departures-airport-sign.svg"
-					class="transportation-icon">
-				</td>
--->
-			<!-- accomodation -->
-			<!--
-				<td class="segments accomodation"
-					ng-if="segment.type == 'accomodation'">
-					<p class="font-large-gray accomodation-firstline">{{segment.name}}</p>
-					<p class="font-small-gray accomodation-sub">{{segment.location.city}},
-						{{segment.location.country}}</p>
-				</td>
--->
-			<!-- date -->
-			<!--
-				<td class=segments ng-if="segment.type == 'datesegment'">
-					<p class=font-activity ng-repeat="activity in segment.activities">
-						<a ng-click="ctrl.open('sm', undefined, activity.id)">{{activity.note}}</a>
-					</p>
-				</td>
-				 -->
-
-		</tr>
-	</table>
-	</div>
 </body>
 </html>

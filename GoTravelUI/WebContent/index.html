@@ -21,129 +21,6 @@
 <link
 	href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	rel="stylesheet">
-<style type="text/css">
-p.font-small-gray {
-	font-family: Verdana;
-	font-weight: bold;
-	font-size: 12px;
-	color: rgb(83, 83, 83);
-	margin: 5px 0 5px 0;
-}
-
-p.font-activity {
-	font-family: Verdana;
-	font-size: 13px;
-	color: rgb(83, 83, 83);
-	text-align: "justify";
-	margin: 5px 0 5px 0;
-}
-
-p.font-large-gray {
-	font-family: Verdana;
-	font-size: 16px;
-	color: rgb(83, 83, 83);
-	font-weight: normal;
-	margin: 5px 0 5px 0;
-}
-
-p.main-date {
-	font-family: Verdana;
-	font-size: 12px;
-	color: rgb(150, 150, 150);
-	font-weight: bold;
-	margin: 5px 0 5px 0;
-}
-
-td.flight {
-	height: 100px;
-}
-
-p.flight-header-pos {
-	top: 10px;
-	left: 35px;
-	position: absolute;
-	margin: 5px 0 5px 0;
-}
-
-p.flight-firstline-pos {
-	top: 35px;
-	left: 35px;
-	position: absolute;
-	margin: 5px 0 5px 0;
-}
-
-p.flight-secondline-pos {
-	top: 60px;
-	left: 35px;
-	position: absolute;
-	margin: 5px 0 5px 0;
-}
-
-.transportation-icon {
-	position: absolute;
-	width: 15px;
-	height: 15px;
-	left: 10px;
-	top: 15px;
-}
-
-td.accomodation {
-	height: 70px;
-	background-color: #FFF9F9;
-}
-
-p.accomodation-firstline {
-	top: 10px;
-	position: absolute;
-	margin: 5px 0 5px 0;
-}
-
-p.accomodation-sub {
-	top: 40px;
-	position: absolute;
-	margin: 5px 0 5px 0;
-}
-
-td.segments {
-	padding: 10px;
-	border-top: solid 1px #000;
-	border-bottom: solid 1px #000;
-	width: 480px;
-	position: relative;
-}
-
-td.date {
-	width: 150px;
-	text-align: center;
-}
-
-.circle {
-	width: 8px;
-	height: 8px;
-	background: rgb(83, 83, 83);
-	border-radius: 100%;
-}
-
-.circle-first-pos {
-	left: 12px;
-	top: 46px;
-	position: absolute;
-}
-
-.circle-second-pos {
-	left: 12px;
-	top: 73px;
-	position: absolute;
-}
-
-.line {
-	left: 15px;
-	top: 50px;
-	position: absolute;
-	border-left: 2px solid rgb(83, 83, 83);
-	height: 25px;
-}
-</style>
 <link rel="stylesheet"
 	href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 </head>
@@ -198,7 +75,7 @@ td.date {
 				<!-- flight -->
 				<td class="segments flight" ng-if="segment.type == 'flight'">
 					<p class="font-small-gray flight-header-pos">{{segment.startDate}}
-						- {{segment.endDate}}</p>
+						- {{segment.endDate}} ⎟ {{segment.airline}} ({{segment.number}})</p>
 					<p class="font-large-gray flight-firstline-pos">
 						{{segment.departureLocation.city}},
 						{{segment.departureLocation.country}}</p>
@@ -206,7 +83,37 @@ td.date {
 						{{segment.arrivalLocation.country}}</p>
 					<div class="circle circle-first-pos"></div>
 					<div class="circle circle-second-pos"></div>
-					<div class="line"></div> <img src="departures-airport-sign.svg"
+					<div class="line"></div> <img src="plane-sign.svg"
+					class="transportation-icon">
+				</td>
+
+				<!-- train-ride -->
+				<td class="segments flight" ng-if="segment.type == 'trainride'">
+					<p class="font-small-gray flight-header-pos">{{segment.startDate}}
+						- {{segment.endDate}} ⎟ {{segment.airline}} ({{segment.name}})</p>
+					<p class="font-large-gray flight-firstline-pos">
+						{{segment.departureLocation.city}},
+						{{segment.departureLocation.country}}</p>
+					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+						{{segment.arrivalLocation.country}}</p>
+					<div class="circle circle-first-pos"></div>
+					<div class="circle circle-second-pos"></div>
+					<div class="line"></div> <img src="train-sign.svg"
+					class="transportation-icon">
+				</td>
+
+				<!-- bus-ride -->
+				<td class="segments flight" ng-if="segment.type == 'busride'">
+					<p class="font-small-gray flight-header-pos">{{segment.startDate}}
+						- {{segment.endDate}} ⎟ {{segment.name}} ({{segment.service}})</p>
+					<p class="font-large-gray flight-firstline-pos">
+						{{segment.departureLocation.city}},
+						{{segment.departureLocation.country}}</p>
+					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+						{{segment.arrivalLocation.country}}</p>
+					<div class="circle circle-first-pos"></div>
+					<div class="circle circle-second-pos"></div>
+					<div class="line"></div> <img src="bus-sign.svg"
 					class="transportation-icon">
 				</td>
 

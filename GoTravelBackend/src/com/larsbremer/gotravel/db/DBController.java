@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.larsbremer.gotravel.model.Accomodation;
 import com.larsbremer.gotravel.model.Activity;
+import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.Flight;
+import com.larsbremer.gotravel.model.TrainRide;
 import com.larsbremer.gotravel.model.Trip;
 
 public interface DBController {
@@ -26,4 +28,13 @@ public interface DBController {
 	Flight createFlight(Flight flight);
 
 	Activity createActivity(Activity activity);
+
+	TrainRide createTrainRide(TrainRide transportation);
+
+	List<TrainRide> searchTrainRides(TrainRide trainRideFilter, Integer offset, Integer size);
+
+	BusRide createBusRide(BusRide busRide);
+
+	List<BusRide> searchBusRides(BusRide busRideFilter, Integer offset, Integer size);
+
 }
