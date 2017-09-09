@@ -8,7 +8,6 @@ import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Location;
-import com.larsbremer.gotravel.model.TrainRide;
 import com.larsbremer.gotravel.model.Trip;
 
 public class PopulateDemoData {
@@ -41,25 +40,25 @@ public class PopulateDemoData {
 		Location puno = createLocation("Puno", "Peru");
 
 		// Flights
-		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-417", luxembourg,
-				createDate(2017, 10, 17, 11, 30), london, createDate(2017, 10, 17, 12, 0)));
+		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-417", null, "Airbus A320",
+				luxembourg, createDate(2017, 10, 17, 11, 30), london, createDate(2017, 10, 17, 12, 0)));
 
-		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-113", london,
+		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-113", null, "Boeing 777", london,
 				createDate(2017, 10, 17, 16, 5), newyork, createDate(2017, 10, 17, 19, 5)));
 
-		System.out.println(createFlight(createdTrip.getId(), "American Airlines", "AA-7739", newyork,
-				createDate(2017, 10, 17, 23, 25), lima, createDate(2017, 10, 18, 5, 55)));
+		System.out.println(createFlight(createdTrip.getId(), "American Airlines", "AA-7739", null, "Boeing 787-8",
+				newyork, createDate(2017, 10, 17, 23, 25), lima, createDate(2017, 10, 18, 5, 55)));
 
-		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-5050", lima,
+		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-5050", null, "Boeing 757", lima,
 				createDate(2017, 11, 2, 6, 45), miami, createDate(2017, 11, 2, 13, 42)));
 
-		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-206", miami,
+		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-206", null, "Boeing 747-400", miami,
 				createDate(2017, 11, 2, 18, 25), london, createDate(2017, 11, 3, 6, 45)));
 
-		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-416", london,
+		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-416", null, "Airbus A320", london,
 				createDate(2017, 11, 3, 8, 5), luxembourg, createDate(2017, 11, 3, 10, 25)));
 
-		System.out.println(createFlight(createdTrip.getId(), "Avianca", "V54UL8", lima,
+		System.out.println(createFlight(createdTrip.getId(), "Avianca", "V54UL8", null, "Airbus A319", lima,
 				createDate(2017, 10, 19, 14, 42), cuzco, createDate(2017, 10, 19, 16, 2)));
 
 		System.out.println(createBusRide(createdTrip.getId(), "Turismomer", "Sun's Route", cuzco,
@@ -139,21 +138,22 @@ public class PopulateDemoData {
 		return createdAccomodation;
 	}
 
-	private static TrainRide createTrainRide(String tripId, String name, String number, Location startLocation,
-			Calendar startDate, Location endLocation, Calendar endDate) {
-
-		TrainRide trainRide = new TrainRide();
-		trainRide.setNumber(number);
-		trainRide.setName(name);
-		trainRide.setTripId(tripId);
-		trainRide.setStartDate(startDate);
-		trainRide.setDepartureLocation(startLocation);
-		trainRide.setEndDate(endDate);
-		trainRide.setArrivalLocation(endLocation);
-
-		TrainRide createdTrainRide = tripController.createTrainRide(trainRide);
-		return createdTrainRide;
-	}
+	// private static TrainRide createTrainRide(String tripId, String name, String
+	// number, Location startLocation,
+	// Calendar startDate, Location endLocation, Calendar endDate) {
+	//
+	// TrainRide trainRide = new TrainRide();
+	// trainRide.setNumber(number);
+	// trainRide.setName(name);
+	// trainRide.setTripId(tripId);
+	// trainRide.setStartDate(startDate);
+	// trainRide.setDepartureLocation(startLocation);
+	// trainRide.setEndDate(endDate);
+	// trainRide.setArrivalLocation(endLocation);
+	//
+	// TrainRide createdTrainRide = tripController.createTrainRide(trainRide);
+	// return createdTrainRide;
+	// }
 
 	private static BusRide createBusRide(String tripId, String name, String service, Location startLocation,
 			Calendar startDate, Location endLocation, Calendar endDate) {
@@ -171,8 +171,8 @@ public class PopulateDemoData {
 		return createdBusRide;
 	}
 
-	private static Flight createFlight(String tripId, String airline, String number, Location startLocation,
-			Calendar startDate, Location endLocation, Calendar endDate) {
+	private static Flight createFlight(String tripId, String airline, String number, String seatNumber, String plane,
+			Location startLocation, Calendar startDate, Location endLocation, Calendar endDate) {
 
 		Flight flight = new Flight();
 		flight.setNumber(number);
@@ -182,6 +182,8 @@ public class PopulateDemoData {
 		flight.setDepartureLocation(startLocation);
 		flight.setEndDate(endDate);
 		flight.setArrivalLocation(endLocation);
+		flight.setSeatNumber(seatNumber);
+		flight.setAirplane(plane);
 
 		Flight createdFlight = tripController.createFlight(flight);
 		return createdFlight;

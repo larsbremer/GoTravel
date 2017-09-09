@@ -34,6 +34,8 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
     for ( var segmentId in trip.segments) {
 
+      var segment = trip.segments[segmentId]
+
       var startDate = trip.segments[segmentId].startDate
       var startDateObj = moment.utc(startDate, timeFormat)
 
@@ -67,6 +69,36 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
       trip.segments[segmentId].duration = durationString
 
+      var displayedAttributes = {
+	"flight" : [ "seat", "airplane" ],
+	"busride" : [ "number" ]
+      }
+
+      var messageCatalog = {
+	"flight" : "Flight",
+	"seat" : "Seat",
+	"airplane" : "Airplane"
+      }
+
+      // Create map of properties
+      if (segment.type in displayedAttributes) {
+
+	var attributes = {};
+
+	for ( var internalAttrId in displayedAttributes[segment.type]) {
+
+	  var internalAttrName = displayedAttributes[segment.type][internalAttrId]
+	  var displayAttrName = messageCatalog[internalAttrName]
+	  attributes[displayAttrName] = segment[internalAttrName]
+	  if (attributes[displayAttrName] == null) {
+	    attributes[displayAttrName] = "-"
+	  }
+	}
+
+	segment.attributes = attributes
+      }
+
+      // Make evening accommodation one element
       $scope.trip.push(trip.segments[segmentId])
       if (trip.segments[segmentId].eveningAccomodation != null) {
 	$scope.trip.push(trip.segments[segmentId].eveningAccomodation)
