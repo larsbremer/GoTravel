@@ -36,30 +36,17 @@ public class MongoController implements DBController {
 
 	@Override
 	public List<Trip> searchTrips(Trip filter, Integer offset, Integer size) {
-
-		try {
-			return new MongoTrip().search(filter, offset, size);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return searchMongoObject(filter, offset, size, Collection.TRIP);
 	}
 
 	@Override
 	public List<Accomodation> searchAccomodations(Accomodation filter, Integer offset, Integer size) {
-		try {
-			return new MongoAccomodation().search(filter, offset, size);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return searchMongoObject(filter, offset, size, Collection.ACCOMODATION);
 	}
 
 	@Override
 	public List<Flight> searchFlights(Flight filter, Integer offset, Integer size) {
-		try {
-			return new MongoFlight().search(filter, offset, size);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return searchMongoObject(filter, offset, size, Collection.FLIGHT);
 	}
 
 	@Override
@@ -69,48 +56,27 @@ public class MongoController implements DBController {
 
 	@Override
 	public Trip createTrip(Trip trip) {
-
-		try {
-			return new MongoTrip().create(trip);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return createMongoObject(trip, Collection.TRIP);
 	}
 
 	@Override
 	public Accomodation createAccomodation(Accomodation accomodation) {
-		try {
-			return new MongoAccomodation().create(accomodation);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return createMongoObject(accomodation, Collection.ACCOMODATION);
 	}
 
 	@Override
 	public List<Activity> searchActivities(Activity filter, Integer offset, Integer size) {
-		try {
-			return new MongoActivity().search(filter, offset, size);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return searchMongoObject(filter, offset, size, Collection.ACTIVITY);
 	}
 
 	@Override
 	public Flight createFlight(Flight flight) {
-		try {
-			return new MongoFlight().create(flight);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return createMongoObject(flight, Collection.FLIGHT);
 	}
 
 	@Override
 	public Activity createActivity(Activity activity) {
-		try {
-			return new MongoActivity().create(activity);
-		} catch (IOException | ParseException e) {
-			throw new ParsingException(e);
-		}
+		return createMongoObject(activity, Collection.ACTIVITY);
 	}
 
 	@Override
