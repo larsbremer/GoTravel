@@ -1,0 +1,65 @@
+
+<!-- <div ng-view></div> -->
+<table ng-controller="TripCtrl">
+
+	<tr ng-repeat="segment in trip">
+		<td class=date ng-if="segment.startDateReduced != segment.endDateReduced"><p class="main-date">
+				{{segment.startDateReduced}}<br>-<br>{{segment.endDateReduced}}
+			</p></td>
+		<td class=date ng-if="segment.startDateReduced != null && segment.startDateReduced == segment.endDateReduced"><p
+				class="main-date">{{segment.startDateReduced}}</p></td>
+		<td class=date ng-if="segment.type == 'accomodation'"></td>
+
+		<!-- flight -->
+		<td class="segments flight" ng-if="segment.type == 'flight'">
+			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
+				({{segment.number}})</p>
+			<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+				{{segment.departureLocation.country}}</p>
+			<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+				{{segment.arrivalLocation.country}}</p>
+			<div class="circle circle-first-pos"></div>
+			<div class="circle circle-second-pos"></div>
+			<div class="line"></div> <img src="assets/img/plane-sign.svg" class="transportation-icon">
+		</td>
+
+		<!-- train-ride -->
+		<td class="segments flight" ng-if="segment.type == 'trainride'">
+			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
+				({{segment.name}})</p>
+			<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+				{{segment.departureLocation.country}}</p>
+			<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+				{{segment.arrivalLocation.country}}</p>
+			<div class="circle circle-first-pos"></div>
+			<div class="circle circle-second-pos"></div>
+			<div class="line"></div> <img src="assets/img/train-sign.svg" class="transportation-icon">
+		</td>
+
+		<!-- bus-ride -->
+		<td class="segments flight" ng-if="segment.type == 'busride'">
+			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.name}}
+				({{segment.service}})</p>
+			<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+				{{segment.departureLocation.country}}</p>
+			<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+				{{segment.arrivalLocation.country}}</p>
+			<div class="circle circle-first-pos"></div>
+			<div class="circle circle-second-pos"></div>
+			<div class="line"></div> <img src="assets/img/bus-sign.svg" class="transportation-icon">
+		</td>
+
+		<!-- accomodation -->
+		<td class="segments accomodation" ng-if="segment.type == 'accomodation'">
+			<p class="font-large-gray accomodation-firstline">{{segment.name}}</p>
+			<p class="font-small-gray accomodation-sub">{{segment.location.city}}, {{segment.location.country}}</p>
+		</td>
+
+		<!-- date -->
+		<td class=segments ng-if="segment.type == 'datesegment'">
+			<p class=font-activity ng-repeat="activity in segment.activities">
+				<a ng-click="ctrl.open('sm', undefined, activity.id)">{{activity.note}}</a>
+			</p>
+		</td>
+	</tr>
+</table>

@@ -5,7 +5,7 @@ angular.module(
     [ 'ngAnimate', 'ngRoute', 'ngSanitize', 'tutorialApp.controllers', 'tutorialApp.services',
 	'tutorialApp.modalcontroller', 'ui.bootstrap' ]).config([ '$routeProvider', function($routeProvider) {
   $routeProvider.when('/trips/:id', {
-    templateUrl : '/GoTravelUI/app/components/trip/tripView.html',
+    templateUrl : '/GoTravelUI/app/components/trip/trip-view.html',
     controller : 'TripCtrl'
   });
   $routeProvider.when('/user-detail/:id', {
@@ -13,6 +13,6 @@ angular.module(
     controller : 'UserDetailCtrl'
   });
   $routeProvider.otherwise({
-    redirectTo : '/tripsWoot'
+    redirectTo : '/not-found'
   });
 } ]);
