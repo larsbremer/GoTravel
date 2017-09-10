@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.larsbremer.gotravel.db.DBConnection;
 import com.larsbremer.gotravel.db.DBController;
-import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Accommodation;
 import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.DateSegment;
@@ -56,7 +56,7 @@ public class TripController {
 
 		expandDateSegments(trip);
 
-		expandAccomodations(trip);
+		expandAccommodations(trip);
 
 		expandActivities(trip);
 
@@ -108,15 +108,15 @@ public class TripController {
 
 	}
 
-	private void expandAccomodations(Trip trip) throws Exception {
+	private void expandAccommodations(Trip trip) throws Exception {
 
 		if (trip == null) {
 			return;
 		}
 
-		List<Accomodation> accomodations = getAccomodationsForTrip(trip.getId());
+		List<Accommodation> accommodations = getAccommodationsForTrip(trip.getId());
 
-		addAccomodationsToTrip(trip, accomodations);
+		addAccommodationsToTrip(trip, accommodations);
 	}
 
 	private void expandActivities(Trip trip) throws Exception {
@@ -148,20 +148,20 @@ public class TripController {
 		}
 	}
 
-	private void addAccomodationsToTrip(Trip trip, List<Accomodation> accomodations) {
+	private void addAccommodationsToTrip(Trip trip, List<Accommodation> accommodations) {
 
-		for (Accomodation accomodation : accomodations) {
-			addAccomodationToTrip(trip, accomodation);
+		for (Accommodation accommodation : accommodations) {
+			addAccommodationToTrip(trip, accommodation);
 		}
 	}
 
-	private void addAccomodationToTrip(Trip trip, Accomodation accomodation) {
+	private void addAccommodationToTrip(Trip trip, Accommodation accommodation) {
 
 		List<Segment> segments = trip.getSegments();
 		for (Segment segment : segments) {
 			if (segment instanceof DateSegment && SegmentController.isEndOfDay(segment.getEndDate())
-					&& SegmentController.doSegmentsOverlap(segment, accomodation)) {
-				((DateSegment) segment).setEveningAccomodation(accomodation);
+					&& SegmentController.doSegmentsOverlap(segment, accommodation)) {
+				((DateSegment) segment).setEveningAccommodation(accommodation);
 			}
 		}
 	}
@@ -212,12 +212,12 @@ public class TripController {
 		return dbController.searchBusRides(busRideFilter, -1, -1);
 	}
 
-	private List<Accomodation> getAccomodationsForTrip(String tripId) throws Exception {
+	private List<Accommodation> getAccommodationsForTrip(String tripId) throws Exception {
 
-		Accomodation accomodationFilter = new Accomodation();
-		accomodationFilter.setTripId(tripId);
+		Accommodation accommodationFilter = new Accommodation();
+		accommodationFilter.setTripId(tripId);
 
-		return dbController.searchAccomodations(accomodationFilter, -1, -1);
+		return dbController.searchAccommodations(accommodationFilter, -1, -1);
 	}
 
 	private List<Activity> getActivitiesForTrip(String tripId) throws Exception {
@@ -232,8 +232,8 @@ public class TripController {
 		return dbController.createTrip(trip);
 	}
 
-	public Accomodation createAccomodation(Accomodation accomodation) {
-		return dbController.createAccomodation(accomodation);
+	public Accommodation createAccommodation(Accommodation accommodation) {
+		return dbController.createAccommodation(accommodation);
 	}
 
 	public Flight createFlight(Flight flight) {

@@ -26,7 +26,47 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
   var tripId = $location.path()
 
+  function setAttributes(segment) {
+
+    var displayedAttributes = {
+      "flight" : [ "seat", "airplane", "url" ],
+      "busride" : [ "number", "url" ],
+      "trainride" : [ "url" ],
+      "accommodation" : [ "url" ]
+    }
+
+    var messageCatalog = {
+      "flight" : "Flight",
+      "seat" : "Seat",
+      "airplane" : "Airplane",
+      "accommodation" : "Accommodation",
+      "url" : "URL",
+      "trainride" : "Train Ride",
+      "busride" : "Bus Ride"
+    }
+
+    // Create map of properties
+    if (segment.type in displayedAttributes) {
+
+      var attributes = {};
+
+      for ( var internalAttrId in displayedAttributes[segment.type]) {
+
+	var internalAttrName = displayedAttributes[segment.type][internalAttrId]
+	var displayAttrName = messageCatalog[internalAttrName]
+	attributes[displayAttrName] = segment[internalAttrName]
+	if (attributes[displayAttrName] == null) {
+	  attributes[displayAttrName] = "-"
+	}
+      }
+
+      segment.attributes = attributes
+    }
+
+  }
+
   $http.get('/GoTravelBackend/rest' + $location.path() + '?expand=true').then(function(tripResponse) {
+
     $scope.trip = []
     var trip = tripResponse.data
 
@@ -69,40 +109,16 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
       trip.segments[segmentId].duration = durationString
 
-      var displayedAttributes = {
-	"flight" : [ "seat", "airplane" ],
-	"busride" : [ "number" ]
-      }
-
-      var messageCatalog = {
-	"flight" : "Flight",
-	"seat" : "Seat",
-	"airplane" : "Airplane"
-      }
-
-      // Create map of properties
-      if (segment.type in displayedAttributes) {
-
-	var attributes = {};
-
-	for ( var internalAttrId in displayedAttributes[segment.type]) {
-
-	  var internalAttrName = displayedAttributes[segment.type][internalAttrId]
-	  var displayAttrName = messageCatalog[internalAttrName]
-	  attributes[displayAttrName] = segment[internalAttrName]
-	  if (attributes[displayAttrName] == null) {
-	    attributes[displayAttrName] = "-"
-	  }
-	}
-
-	segment.attributes = attributes
-      }
+      setAttributes(segment)
 
       // Make evening accommodation one element
       $scope.trip.push(trip.segments[segmentId])
-      if (trip.segments[segmentId].eveningAccomodation != null) {
-	$scope.trip.push(trip.segments[segmentId].eveningAccomodation)
+      if (trip.segments[segmentId].eveningAccommodation != null) {
+	var eveningAccommodation = trip.segments[segmentId].eveningAccommodation
+	setAttributes(eveningAccommodation)
+	$scope.trip.push(eveningAccommodation)
       }
     }
+
   });
 } ])

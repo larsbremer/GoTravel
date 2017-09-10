@@ -2,7 +2,7 @@ package com.larsbremer.gotravel.db;
 
 import java.util.List;
 
-import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Accommodation;
 import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.Flight;
@@ -19,11 +19,11 @@ public interface DBController {
 
 	List<Flight> searchFlights(Flight flightFilter, Integer offset, Integer size);
 
-	List<Accomodation> searchAccomodations(Accomodation accomodationFilter, Integer offset, Integer size);
+	List<Accommodation> searchAccommodations(Accommodation accommodationFilter, Integer offset, Integer size);
 
 	List<Activity> searchActivities(Activity activityFilter, Integer offset, Integer size);
 
-	Accomodation createAccomodation(Accomodation accomodation);
+	Accommodation createAccommodation(Accommodation accommodation);
 
 	Flight createFlight(Flight flight);
 

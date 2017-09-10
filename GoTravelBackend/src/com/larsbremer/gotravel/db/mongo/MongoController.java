@@ -11,7 +11,7 @@ import org.bson.conversions.Bson;
 import com.larsbremer.gotravel.controller.ParsingException;
 import com.larsbremer.gotravel.db.DBController;
 import com.larsbremer.gotravel.db.mongo.MongoConnection.Collection;
-import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Accommodation;
 import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.Flight;
@@ -40,8 +40,8 @@ public class MongoController implements DBController {
 	}
 
 	@Override
-	public List<Accomodation> searchAccomodations(Accomodation filter, Integer offset, Integer size) {
-		return searchMongoObject(filter, offset, size, Collection.ACCOMODATION);
+	public List<Accommodation> searchAccommodations(Accommodation filter, Integer offset, Integer size) {
+		return searchMongoObject(filter, offset, size, Collection.ACCOMMODATION);
 	}
 
 	@Override
@@ -60,8 +60,8 @@ public class MongoController implements DBController {
 	}
 
 	@Override
-	public Accomodation createAccomodation(Accomodation accomodation) {
-		return createMongoObject(accomodation, Collection.ACCOMODATION);
+	public Accommodation createAccommodation(Accommodation accommodation) {
+		return createMongoObject(accommodation, Collection.ACCOMMODATION);
 	}
 
 	@Override

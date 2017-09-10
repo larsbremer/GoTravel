@@ -3,7 +3,7 @@ package com.larsbremer.gotravel.controller;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import com.larsbremer.gotravel.model.Accomodation;
+import com.larsbremer.gotravel.model.Accommodation;
 import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
 import com.larsbremer.gotravel.model.Flight;
@@ -24,11 +24,11 @@ public class PopulateDemoData {
 		Trip createdTrip = createTrip(createDate(2017, 10, 20, 10, 0), createDate(2017, 11, 3, 21, 0));
 		System.out.println(createdTrip);
 
-		// Acccomodation
+		// Acccommodation
 		String url = "https://secure.booking.com/myreservations.html?aid=304142;label=gen173nr-1DCAEoggJCAlhYSDNiBW5vcmVmaIkBiAEBmAEHuAEHyAEN2AED6AEBkgIBeagCAw;sid=843d82863c6586b1e75a5583e8cb45c2;auth_key=r5UBuUl3VYXp2wDF&";
-		Accomodation createdAccomodation = createAccomodation(createdTrip.getId(), "Pucllana Lodge",
+		Accommodation createdAccommodation = createAccommodation(createdTrip.getId(), "Pucllana Lodge",
 				createLocation("Lima", "Peru"), url, createDate(2017, 10, 18, 13, 0), createDate(2017, 10, 19, 12, 0));
-		System.out.println(createdAccomodation);
+		System.out.println(createdAccommodation);
 
 		// Location
 		Location london = createLocation("London", "United Kingdom");
@@ -123,19 +123,19 @@ public class PopulateDemoData {
 		return createdTrip;
 	}
 
-	private static Accomodation createAccomodation(String tripId, String name, Location location, String url,
+	private static Accommodation createAccommodation(String tripId, String name, Location location, String url,
 			Calendar startDate, Calendar endDate) {
 
-		Accomodation accomodation = new Accomodation();
-		accomodation.setName(name);
-		accomodation.setTripId(tripId);
-		accomodation.setStartDate(startDate);
-		accomodation.setEndDate(endDate);
-		accomodation.setLocation(location);
-		accomodation.setUrl(url);
+		Accommodation accommodation = new Accommodation();
+		accommodation.setName(name);
+		accommodation.setTripId(tripId);
+		accommodation.setStartDate(startDate);
+		accommodation.setEndDate(endDate);
+		accommodation.setLocation(location);
+		accommodation.setUrl(url);
 
-		Accomodation createdAccomodation = tripController.createAccomodation(accomodation);
-		return createdAccomodation;
+		Accommodation createdAccommodation = tripController.createAccommodation(accommodation);
+		return createdAccommodation;
 	}
 
 	// private static TrainRide createTrainRide(String tripId, String name, String

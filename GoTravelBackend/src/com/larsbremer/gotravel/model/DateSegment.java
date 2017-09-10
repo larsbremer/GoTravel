@@ -8,7 +8,7 @@ import com.larsbremer.gotravel.controller.SegmentController;
 
 public class DateSegment extends Segment {
 
-	private Accomodation eveningAccomodation;
+	private Accommodation eveningAccommodation;
 	private String tripId;
 	private List<Activity> activities = new ArrayList<>();
 
@@ -33,12 +33,12 @@ public class DateSegment extends Segment {
 		this.tripId = tripId;
 	}
 
-	public Accomodation getEveningAccomodation() {
-		return eveningAccomodation;
+	public Accommodation getEveningAccommodation() {
+		return eveningAccommodation;
 	}
 
-	public void setEveningAccomodation(Accomodation eveningAccomodation) {
-		this.eveningAccomodation = eveningAccomodation;
+	public void setEveningAccommodation(Accommodation eveningAccommodation) {
+		this.eveningAccommodation = eveningAccommodation;
 	}
 
 	public List<Activity> getActivities() {

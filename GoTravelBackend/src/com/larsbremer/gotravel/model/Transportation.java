@@ -5,6 +5,15 @@ public class Transportation extends Segment {
 	private String tripId;
 	private Location departureLocation;
 	private Location arrivalLocation;
+	private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public Location getDepartureLocation() {
 		return departureLocation;

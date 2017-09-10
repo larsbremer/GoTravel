@@ -12,7 +12,7 @@ public class MongoConnection {
 
 	enum Collection {
 
-		ACCOMODATION, ACTIVITY, FLIGHT, TRIP, DATE_SEGMENT, TRAIN_RIDE, BUS_RIDE;
+		ACCOMMODATION, ACTIVITY, FLIGHT, TRIP, DATE_SEGMENT, TRAIN_RIDE, BUS_RIDE;
 
 		public String getCollectionName() {
 			return this.name().toLowerCase();

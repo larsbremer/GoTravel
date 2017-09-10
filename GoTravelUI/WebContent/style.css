@@ -27,10 +27,17 @@ p.font-large-gray {
 }
 
 p.font-medium-gray {
-	font-family: Verdana;
-	font-size: 14px;
-	color: rgb(83, 83, 83);
-	font-weight: normal;
+    font-family: Verdana;
+    font-size: 14px;
+    color: rgb(83, 83, 83);
+    font-weight: normal;
+}
+
+a.font-medium-gray {
+    font-family: Verdana;
+    font-size: 14px;
+    color: rgb(83, 83, 83);
+    font-weight: normal;
 }
 
 p.main-date {
@@ -49,18 +56,13 @@ div.trip-overview {
 	position: relative;
 }
 
-div.left-float-cleared {
+.left-float-cleared {
 	float: left;
 	clear: left;
-	margin-top: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-p.left-float-cleared {
-	float: left;
-	clear: left;
-    margin-bottom: 3px;
-    margin-top: 0px;
-}
 
 div.attributes {
 	float: left;
@@ -97,19 +99,18 @@ p.flight-secondline-pos {
 	float: left;
 }
 
-td.accomodation {
+td.accommodation {
 	height: 70px;
 	background-color: #FFF9F9;
 }
 
-p.accomodation-firstline {
-	top: 10px;
-	position: absolute;
+p.accommodation-firstline {
+	float: left;
 }
 
-p.accomodation-sub {
-	top: 40px;
-	position: absolute;
+p.accommodation-sub {
+	float: left;
+	clear: left;
 }
 
 td.segments {

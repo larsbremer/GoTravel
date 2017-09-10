@@ -6,14 +6,14 @@ public abstract class Segment extends DatabaseItem {
 
 	private Calendar startDate;
 	private Calendar endDate;
-	private String url;
+	private String note;
 
-	public String getUrl() {
-		return url;
+	public String getNote() {
+		return note;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Calendar getStartDate() {

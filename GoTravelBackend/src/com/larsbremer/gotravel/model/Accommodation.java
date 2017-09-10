@@ -1,10 +1,19 @@
 package com.larsbremer.gotravel.model;
 
-public class Accomodation extends Segment {
+public class Accommodation extends Segment {
 
 	private String name;
 	private Location location;
 	private String tripId;
+	private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public String getTripId() {
 		return tripId;
@@ -32,6 +41,6 @@ public class Accomodation extends Segment {
 
 	@Override
 	public String toString() {
-		return "Accomodation: [name: " + name + "]" + super.toString();
+		return "Accommodation: [name: " + name + "]" + super.toString();
 	}
 }
