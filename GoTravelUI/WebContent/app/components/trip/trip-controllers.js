@@ -26,6 +26,70 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
   var tripId = $location.path()
 
+  function getDateRangeString(currentDaySegments) {
+
+    var startDate = null;
+    var endDate = null;
+
+    for ( var segmentId in currentDaySegments) {
+
+      var segment = currentDaySegments[segmentId]
+
+      if (segmentId == 0) {
+	startDate = segment.startDateReduced
+      }
+
+      if (segment.type != 'accommodation') {
+	endDate = segment.endDateReduced
+      }
+    }
+
+    if (startDate == endDate) {
+      return [ startDate ];
+    }
+
+    return [ startDate, endDate ];
+  }
+
+  function setDateAttributes(segment) {
+
+    var timeFormat = "YYYY-MM-DD'T'HH:mm:ss.SSSZ"
+
+    var startDate = segment.startDate
+    var startDateObj = moment.utc(startDate, timeFormat)
+
+    var endDate = segment.endDate
+    var endDateObj = moment.utc(endDate, timeFormat)
+
+    segment.startDate = startDateObj.format('HH:mm');
+    segment.endDate = endDateObj.format('HH:mm');
+
+    segment.startDateReduced = startDateObj.format('ddd, DD.MM.');
+    segment.endDateReduced = endDateObj.format('ddd, DD.MM.');
+
+    var durationMinutes = Math.round((endDateObj.format('x') - startDateObj.format('x')) / (1000 * 60));
+
+    var days = Math.floor(durationMinutes / (24 * 60))
+    var remainingMinutes = durationMinutes - (days * 24 * 60)
+    var hours = Math.floor(remainingMinutes / 60)
+    var remainingMinutes = remainingMinutes - (hours * 60)
+    var minutes = remainingMinutes
+
+    var durationString = ""
+    if (days > 0) {
+      durationString += days + "d "
+    }
+
+    if (days > 0 || hours > 0) {
+      durationString += hours + "h "
+    }
+
+    durationString += minutes + "min"
+
+    segment.duration = durationString
+
+  }
+
   function setAttributes(segment) {
 
     var displayedAttributes = {
@@ -42,7 +106,8 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
       "accommodation" : "Accommodation",
       "url" : "URL",
       "trainride" : "Train Ride",
-      "busride" : "Bus Ride"
+      "busride" : "Bus Ride",
+      "number" : "Number"
     }
 
     // Create map of properties
@@ -67,58 +132,59 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
 
   $http.get('/GoTravelBackend/rest' + $location.path() + '?expand=true').then(function(tripResponse) {
 
-    $scope.trip = []
+    var allSegments = []
     var trip = tripResponse.data
-
-    var timeFormat = "YYYY-MM-DD'T'HH:mm:ss.SSSZ"
 
     for ( var segmentId in trip.segments) {
 
       var segment = trip.segments[segmentId]
 
-      var startDate = trip.segments[segmentId].startDate
-      var startDateObj = moment.utc(startDate, timeFormat)
-
-      var endDate = trip.segments[segmentId].endDate
-      var endDateObj = moment.utc(endDate, timeFormat)
-
-      trip.segments[segmentId].startDate = startDateObj.format('HH:mm');
-      trip.segments[segmentId].endDate = endDateObj.format('HH:mm');
-
-      trip.segments[segmentId].startDateReduced = startDateObj.format('ddd, DD.MM.');
-      trip.segments[segmentId].endDateReduced = endDateObj.format('ddd, DD.MM.');
-
-      var durationMinutes = Math.round((endDateObj.format('x') - startDateObj.format('x')) / (1000 * 60));
-
-      var days = Math.floor(durationMinutes / (24 * 60))
-      var remainingMinutes = durationMinutes - (days * 24 * 60)
-      var hours = Math.floor(remainingMinutes / 60)
-      var remainingMinutes = remainingMinutes - (hours * 60)
-      var minutes = remainingMinutes
-
-      var durationString = ""
-      if (days > 0) {
-	durationString += days + "d "
-      }
-
-      if (days > 0 || hours > 0) {
-	durationString += hours + "h "
-      }
-
-      durationString += minutes + "min"
-
-      trip.segments[segmentId].duration = durationString
-
+      setDateAttributes(segment)
       setAttributes(segment)
 
       // Make evening accommodation one element
-      $scope.trip.push(trip.segments[segmentId])
+      allSegments.push(trip.segments[segmentId])
       if (trip.segments[segmentId].eveningAccommodation != null) {
 	var eveningAccommodation = trip.segments[segmentId].eveningAccommodation
+
+	setDateAttributes(eveningAccommodation)
 	setAttributes(eveningAccommodation)
-	$scope.trip.push(eveningAccommodation)
+
+	allSegments.push(eveningAccommodation)
       }
+
     }
+
+    var currentDaySegments = []
+    var currentDay = null
+    $scope.trip = []
+    $scope.day = []
+
+    for ( var segmentId in allSegments) {
+
+      var segment = allSegments[segmentId]
+
+      var isOneDaySegment = segment.startDateReduced == segment.endDateReduced;
+      var isSameDayAsBefore = currentDay == segment.startDateReduced;
+      if ((isOneDaySegment && isSameDayAsBefore) || segment.type == 'accommodation') {
+
+	currentDaySegments.push(segment);
+
+      } else {
+
+	if (currentDaySegments.length > 0) {
+	  $scope.trip.push(currentDaySegments);
+	  $scope.day.push(getDateRangeString(currentDaySegments))
+	}
+
+	currentDaySegments = [ segment ]
+	currentDay = segment.startDateReduced
+      }
+
+    }
+
+    $scope.trip.push(currentDaySegments);
+    $scope.day.push(getDateRangeString(currentDaySegments))
 
   });
 } ])

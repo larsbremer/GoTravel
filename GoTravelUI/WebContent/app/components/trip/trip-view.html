@@ -1,103 +1,127 @@
 
 <!-- <div ng-view></div> -->
-<table ng-controller="TripCtrl">
+<table class="main-table" ng-controller="TripCtrl">
 
-	<tr ng-repeat="segment in trip">
-		<td class=date ng-if="segment.startDateReduced != segment.endDateReduced"><p class="main-date">
-				{{segment.startDateReduced}}<br>-<br>{{segment.endDateReduced}}
-			</p></td>
-		<td class=date ng-if="segment.startDateReduced != null && segment.startDateReduced == segment.endDateReduced"><p
-				class="main-date">{{segment.startDateReduced}}</p></td>
-		<td class=date ng-if="segment.type == 'accommodation'"></td>
+	<tbody ng-repeat="(datestring, daylist) in trip">
 
-		<!-- flight -->
-		<td class="segments flight" ng-if="segment.type == 'flight'">
-			<div>
-				<img src="assets/img/plane-sign.svg" class="transportation-icon">
-			</div>
-			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
-				({{segment.number}})</p>
-			<div class="trip-overview">
-				<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
-					{{segment.departureLocation.country}}</p>
-				<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
-					{{segment.arrivalLocation.country}}</p>
-				<div class="circle circle-first-pos"></div>
-				<div class="circle circle-second-pos"></div>
-				<div class="line"></div>
-			</div>
-			<div class="left-float-cleared">
-				<div class="attributes" ng-repeat="(key, value) in segment.attributes">
-					<p class="font-attribute-categories left-float-cleared">{{key}}</p>
-					<div class="segments flight" ng-if="key == 'URL' && value != '-'">
-						<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
-					</div>
-					<div class="segments flight" ng-if="key != 'URL' || value == '-'">
-						<p class="font-medium-gray left-float-cleared">{{value}}</p>
+		<tr ng-repeat="segment in daylist">
+
+			<td class="date" ng-if="$first" rowspan="{{daylist.length}}">
+				<p class="main-date" ng-if="day[datestring].length == 1">{{day[datestring][0]}}</p>
+				<p class="main-date" ng-if="day[datestring].length == 2">
+					{{day[datestring][0]}}<br>-<br>{{day[datestring][1]}}
+				</p>
+			</td>
+
+			<!-- flight -->
+			<td class="segments flight" ng-if="segment.type == 'flight'">
+				<div>
+					<img src="assets/img/plane-sign.svg" class="transportation-icon">
+				</div>
+				<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
+					({{segment.number}})</p>
+				<div class="trip-overview">
+					<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+						{{segment.departureLocation.country}}</p>
+					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+						{{segment.arrivalLocation.country}}</p>
+					<div class="circle circle-first-pos"></div>
+					<div class="circle circle-second-pos"></div>
+					<div class="line"></div>
+				</div>
+				<div class="left-float-cleared top-margin">
+					<div class="attributes" ng-repeat="(key, value) in segment.attributes">
+						<p class="font-attribute-categories left-float-cleared">{{key}}</p>
+						<div class="segments flight" ng-if="key == 'URL' && value != '-'">
+							<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
+						</div>
+						<div class="segments flight" ng-if="key != 'URL' || value == '-'">
+							<p class="font-medium-gray left-float-cleared">{{value}}</p>
+						</div>
 					</div>
 				</div>
-			</div>
-		</td>
+			</td>
 
-		<!-- train-ride -->
-		<td class="segments flight" ng-if="segment.type == 'trainride'">
-			<div>
-				<img src="assets/img/train-sign.svg" class="transportation-icon">
-			</div>
-			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
-				({{segment.name}})</p>
-			<div class="trip-overview">
-				<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
-					{{segment.departureLocation.country}}</p>
-				<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
-					{{segment.arrivalLocation.country}}</p>
-				<div class="circle circle-first-pos"></div>
-				<div class="circle circle-second-pos"></div>
-
-				<div class="line"></div>
-			</div>
-		</td>
-
-		<!-- bus-ride -->
-		<td class="segments flight" ng-if="segment.type == 'busride'">
-			<div>
-				<img src="assets/img/bus-sign.svg" class="transportation-icon">
-			</div>
-			<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.name}}
-				({{segment.service}})</p>
-			<div class="trip-overview">
-				<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
-					{{segment.departureLocation.country}}</p>
-				<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
-					{{segment.arrivalLocation.country}}</p>
-				<div class="circle circle-first-pos"></div>
-				<div class="circle circle-second-pos"></div>
-				<div class="line"></div>
-			</div>
-		</td>
-
-		<!-- accommodation -->
-		<td class="segments accommodation" ng-if="segment.type == 'accommodation'">
-			<p class="font-large-gray accommodation-firstline">{{segment.name}}</p>
-			<p class="font-small-gray accommodation-sub">{{segment.location.city}}, {{segment.location.country}}</p>
-			<div class="left-float-cleared">
-				<div class="attributes" ng-repeat="(key, value) in segment.attributes">
-					<p class="font-attribute-categories left-float-cleared">{{key}}</p>
-					<div class="segments flight" ng-if="key == 'URL' && value != '-'">
-						<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
-					</div>
-					<div class="segments flight" ng-if="key != 'URL' || value == '-'">
-						<p class="font-medium-gray left-float-cleared">{{value}}</p>
+			<!-- train-ride -->
+			<td class="segments flight" ng-if="segment.type == 'trainride'">
+				<div>
+					<img src="assets/img/train-sign.svg" class="transportation-icon">
+				</div>
+				<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.airline}}
+					({{segment.name}})</p>
+				<div class="trip-overview">
+					<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+						{{segment.departureLocation.country}}</p>
+					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+						{{segment.arrivalLocation.country}}</p>
+					<div class="circle circle-first-pos"></div>
+					<div class="circle circle-second-pos"></div>
+					<div class="line"></div>
+				</div>
+				<div class="left-float-cleared top-margin">
+					<div class="attributes" ng-repeat="(key, value) in segment.attributes">
+						<p class="font-attribute-categories left-float-cleared">{{key}}</p>
+						<div class="segments flight" ng-if="key == 'URL' && value != '-'">
+							<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
+						</div>
+						<div class="segments flight" ng-if="key != 'URL' || value == '-'">
+							<p class="font-medium-gray left-float-cleared">{{value}}</p>
+						</div>
 					</div>
 				</div>
-			</div>
-		</td>
+			</td>
 
-		<!-- date -->
-		<td class=segments ng-if="segment.type == 'datesegment'">
-			<p class=font-activity ng-repeat="activity in segment.activities">
-				<a ng-click="ctrl.open('sm', undefined, activity.id)">{{activity.note}}</a>
-			</p>
-		</td>
-	</tr>
+			<!-- bus-ride -->
+			<td class="segments flight" ng-if="segment.type == 'busride'">
+				<div>
+					<img src="assets/img/bus-sign.svg" class="transportation-icon">
+				</div>
+				<p class="font-small-gray flight-header-pos">{{segment.startDate}} - {{segment.endDate}} ⎟ {{segment.name}}
+					({{segment.service}})</p>
+				<div class="trip-overview">
+					<p class="font-large-gray flight-firstline-pos">{{segment.departureLocation.city}},
+						{{segment.departureLocation.country}}</p>
+					<p class="font-large-gray flight-secondline-pos">{{segment.arrivalLocation.city}},
+						{{segment.arrivalLocation.country}}</p>
+					<div class="circle circle-first-pos"></div>
+					<div class="circle circle-second-pos"></div>
+					<div class="line"></div>
+				</div>
+				<div class="left-float-cleared top-margin">
+					<div class="attributes" ng-repeat="(key, value) in segment.attributes">
+						<p class="font-attribute-categories left-float-cleared">{{key}}</p>
+						<div class="segments flight" ng-if="key == 'URL' && value != '-'">
+							<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
+						</div>
+						<div class="segments flight" ng-if="key != 'URL' || value == '-'">
+							<p class="font-medium-gray left-float-cleared">{{value}}</p>
+						</div>
+					</div>
+				</div>
+			</td>
+
+			<!-- accommodation -->
+			<td class="segments accommodation" ng-if="segment.type == 'accommodation'">
+				<p class="font-large-gray accommodation-firstline">{{segment.name}}</p>
+				<p class="font-small-gray accommodation-sub">{{segment.location.city}}, {{segment.location.country}}</p>
+				<div class="left-float-cleared">
+					<div class="attributes" ng-repeat="(key, value) in segment.attributes">
+						<p class="font-attribute-categories left-float-cleared">{{key}}</p>
+						<div class="segments flight" ng-if="key == 'URL' && value != '-'">
+							<a ng-href={{value}} class="font-medium-gray left-float-cleared" target="_blank"> link </a>
+						</div>
+						<div class="segments flight" ng-if="key != 'URL' || value == '-'">
+							<p class="font-medium-gray left-float-cleared">{{value}}</p>
+						</div>
+					</div>
+				</div>
+			</td>
+
+			<!-- date -->
+			<td class="segments flight" ng-if="segment.type == 'datesegment'">
+				<p class=font-activity></p>
+				<p class=font-activity ng-repeat="activity in segment.activities">{{activity.note}}</p>
+			</td>
+		</tr>
+	</tbody>
 </table>

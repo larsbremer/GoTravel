@@ -160,7 +160,7 @@ public class TripController {
 		List<Segment> segments = trip.getSegments();
 		for (Segment segment : segments) {
 			if (segment instanceof DateSegment && SegmentController.isEndOfDay(segment.getEndDate())
-					&& SegmentController.doSegmentsOverlap(segment, accommodation)) {
+					&& SegmentController.doesSegmentContainDate(accommodation, segment.getEndDate())) {
 				((DateSegment) segment).setEveningAccommodation(accommodation);
 			}
 		}
