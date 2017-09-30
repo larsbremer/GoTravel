@@ -117,10 +117,16 @@
 				</div>
 			</td>
 
-			<!-- date -->
+			<!-- activity -->
 			<td class="segments flight" ng-if="segment.type == 'datesegment'">
 				<p class=font-activity></p>
-				<p class=font-activity ng-repeat="activity in segment.activities">{{activity.note}}</p>
+				<div ng-repeat="activity in segment.activities">
+					<p class=font-activity ng-if="activity.startDate && !activity.endDate">{{activity.startDate | date:"H:mm" :
+						'UTC'}}: {{activity.note}}</p>
+					<p class=font-activity ng-if="activity.startDate && activity.endDate">{{activity.startDate | date:"H:mm" :
+						'UTC'}} - {{activity.endDate | date:"H:mm" : 'UTC'}}: {{activity.note}}</p>
+					<p class=font-activity ng-if="!activity.startDate && !activity.endDate">{{activity.note}}</p>
+				</div>
 			</td>
 		</tr>
 	</tbody>

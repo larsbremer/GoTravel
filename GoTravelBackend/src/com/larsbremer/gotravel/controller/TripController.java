@@ -141,8 +141,15 @@ public class TripController {
 
 		List<Segment> segments = trip.getSegments();
 		for (Segment segment : segments) {
-			if (segment instanceof DateSegment
-					&& SegmentController.doesSegmentContainDate(segment, activity.getDate())) {
+
+			Calendar startDate = activity.getStartDate();
+			boolean startDateInSegment = startDate == null
+					|| SegmentController.doesSegmentContainDate(segment, startDate);
+
+			Calendar endDate = activity.getEndDate();
+			boolean endDateInSegment = endDate == null || SegmentController.doesSegmentContainDate(segment, endDate);
+
+			if (segment instanceof DateSegment && startDateInSegment && endDateInSegment) {
 				((DateSegment) segment).addActivity(activity);
 			}
 		}

@@ -32,6 +32,8 @@ public class PopulateDemoData {
 		Location cuzco = createLocation("Cuzco", "Peru");
 		Location miami = createLocation("Miami", "United States of America");
 		Location puno = createLocation("Puno", "Peru");
+		Location arequipa = createLocation("Arequipa", "Peru");
+		Location paracas = createLocation("Paracas", "Peru");
 
 		// Acccommodation
 		String url = "https://secure.booking.com/myreservations.html?aid=304142;label=gen173nr-1DCAEoggJCAlhYSDNiBW5vcmVmaIkBiAEBmAEHuAEHyAEN2AED6AEBkgIBeagCAw;sid=843d82863c6586b1e75a5583e8cb45c2;auth_key=r5UBuUl3VYXp2wDF&";
@@ -70,35 +72,49 @@ public class PopulateDemoData {
 		System.out.println(createFlight(createdTrip.getId(), "Avianca", "V54UL8", null, null, "Airbus A319", lima,
 				createDate(2017, 10, 19, 14, 42), cuzco, createDate(2017, 10, 19, 16, 2)));
 
-		System.out.println(createBusRide(createdTrip.getId(), "Turismomer", "Sun's Route", cuzco,
+		System.out.println(createBusRide(createdTrip.getId(), "Turismomer", "Sun's Route", null, cuzco,
 				createDate(2017, 10, 26, 7, 0), puno, createDate(2017, 10, 26, 17, 0)));
+
+		System.out.println(
+				createBusRide(createdTrip.getId(), "Cruz Del Sur", "Cruzero Evolution", "http://www.cruzdelsur.com.pe",
+						arequipa, createDate(2017, 10, 29, 19, 0), paracas, createDate(2017, 10, 30, 7, 20)));
+
+		System.out.println(
+				createBusRide(createdTrip.getId(), "Cruz Del Sur", "Cruzero Plus", "http://www.cruzdelsur.com.pe",
+						paracas, createDate(2017, 10, 31, 16, 10), lima, createDate(2017, 10, 31, 20, 5)));
 
 		// Activity
 		String note = "Inka Trail: Day 1";
-		Activity createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 22, 12, 00), note);
+		Activity createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 22, 00, 00),
+				createDate(2017, 10, 22, 23, 59), note);
 		System.out.println(createdActivity);
 
 		note = "Inka Trail: Day 2";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 23, 12, 00), note);
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 23, 12, 00), null, note);
 		System.out.println(createdActivity);
 
 		note = "Inka Trail: Day 3";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 24, 12, 00), note);
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 24, 12, 00), null, note);
 		System.out.println(createdActivity);
 
 		note = "Inka Trail: Day 4";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 12, 00), note);
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 12, 00), null, note);
 		System.out.println(createdActivity);
 
 		note = "Train back to Cuzco";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 16, 00), note);
+		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 16, 00), null, note);
 		System.out.println(createdActivity);
+
+		System.out.println(createActivity(createdTrip.getId(), createDate(2017, 10, 31, 8, 00),
+				createDate(2017, 10, 31, 10, 00), "Ballestas Islands Tour"));
+
 	}
 
-	private static Activity createActivity(String tripId, Calendar date, String note) {
+	private static Activity createActivity(String tripId, Calendar startDate, Calendar endDate, String note) {
 
 		Activity activity = new Activity();
-		activity.setDate(date);
+		activity.setStartDate(startDate);
+		activity.setEndDate(endDate);
 		activity.setTripId(tripId);
 		activity.setNote(note);
 
@@ -164,7 +180,7 @@ public class PopulateDemoData {
 	// return createdTrainRide;
 	// }
 
-	private static BusRide createBusRide(String tripId, String name, String service, Location startLocation,
+	private static BusRide createBusRide(String tripId, String name, String service, String url, Location startLocation,
 			Calendar startDate, Location endLocation, Calendar endDate) {
 
 		BusRide busRide = new BusRide();
@@ -175,6 +191,7 @@ public class PopulateDemoData {
 		busRide.setDepartureLocation(startLocation);
 		busRide.setEndDate(endDate);
 		busRide.setArrivalLocation(endLocation);
+		busRide.setUrl(url);
 
 		BusRide createdBusRide = tripController.createBus(busRide);
 		return createdBusRide;
