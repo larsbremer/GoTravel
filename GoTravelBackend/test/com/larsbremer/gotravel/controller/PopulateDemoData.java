@@ -49,6 +49,10 @@ public class PopulateDemoData {
 		System.out.println(createAccommodation(createdTrip.getId(), "Hostal Mallqui", cuzco, url3,
 				createDate(2017, 10, 25, 11, 0), createDate(2017, 10, 26, 10, 0)));
 
+		String url4 = "https://secure.booking.com/myreservations.en-gb.html?aid=336317&auth_key=D4foZREwE1i8sfPf&&source=conf_email&pbsource=conf_email_hotel_name&et=UmFuZG9tSVYkc2RlIyh9Yaa29/3xUOLbc4nH+vVEDBE6unVGK98GwB+Gu0VAi0AkJWWdbd8PKHtr0+1OcEggvIKcBXfSOl7slbSoIE+T0b6cmk5LLLliRAZVUj0/atDQuJPW1/wENo4=";
+		System.out.println(createAccommodation(createdTrip.getId(), "Quechuas Inka Palace", puno, url4,
+				createDate(2017, 10, 26, 10, 0), createDate(2017, 10, 28, 11, 0)));
+
 		// Flights
 		String flightUrl = "https://www.onetwotrip.com/de/ticket/?number=H19771211&email=info@larsbremer.de";
 		System.out.println(createFlight(createdTrip.getId(), "British Airways", "BA-417", null, flightUrl,
@@ -77,33 +81,38 @@ public class PopulateDemoData {
 
 		System.out.println(
 				createBusRide(createdTrip.getId(), "Cruz Del Sur", "Cruzero Evolution", "http://www.cruzdelsur.com.pe",
-						arequipa, createDate(2017, 10, 29, 19, 0), paracas, createDate(2017, 10, 30, 7, 20)));
+						arequipa, createDate(2017, 10, 29, 21, 30), paracas, createDate(2017, 10, 30, 9, 0)));
+
+		System.out.println(createBusRide(createdTrip.getId(), "4m-express", "PUNO - AREQUIPA",
+				"http://www.4m-express.com/ruta_pa_en.htm", puno, createDate(2017, 10, 28, 6, 15), arequipa,
+				createDate(2017, 10, 28, 12, 15)));
 
 		System.out.println(
 				createBusRide(createdTrip.getId(), "Cruz Del Sur", "Cruzero Plus", "http://www.cruzdelsur.com.pe",
 						paracas, createDate(2017, 10, 31, 16, 10), lima, createDate(2017, 10, 31, 20, 5)));
 
 		// Activity
-		String note = "Inka Trail: Day 1";
 		Activity createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 22, 00, 00),
-				createDate(2017, 10, 22, 23, 59), note);
+				createDate(2017, 10, 22, 23, 59), "Inka Trail Day 1");
 		System.out.println(createdActivity);
 
-		note = "Inka Trail: Day 2";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 23, 12, 00), null, note);
-		System.out.println(createdActivity);
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 23, 12, 00), null,
+				"Inka Trail Day 2"));
 
-		note = "Inka Trail: Day 3";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 24, 12, 00), null, note);
-		System.out.println(createdActivity);
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 24, 12, 00), null,
+				"Inka Trail Day 3"));
 
-		note = "Inka Trail: Day 4";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 12, 00), null, note);
-		System.out.println(createdActivity);
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 12, 00), null,
+				"Inka Trail Day 4"));
 
-		note = "Train back to Cuzco";
-		createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 16, 00), null, note);
-		System.out.println(createdActivity);
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 25, 16, 00), null,
+				"Train back to Cuzco"));
+
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 27, 9, 00),
+				createDate(2017, 10, 27, 18, 00), "Lake Titicaca Tour"));
+
+		System.out.println(createdActivity = createActivity(createdTrip.getId(), createDate(2017, 10, 29, 9, 00), null,
+				"Colca Canyon or other tour"));
 
 		System.out.println(createActivity(createdTrip.getId(), createDate(2017, 10, 31, 8, 00),
 				createDate(2017, 10, 31, 10, 00), "Ballestas Islands Tour"));
