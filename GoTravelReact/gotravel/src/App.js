@@ -238,7 +238,7 @@ class App extends Component {
 					<img src="/assets/img/train-sign.svg" className="transportation-icon" alt="" />
 				</div>
         <p className="font-small-gray flight-header-pos">
-          {startDate} - {endDate} ⎟ {segment.airline} ({segment.number})
+          {startDate} - {endDate} ⎟ {segment.airline} ({segment.name})
         </p>
         <div className="trip-overview">
           <p className="font-large-gray flight-firstline-pos">{segment.departureLocation.city}, {segment.departureLocation.country}</p>
@@ -267,7 +267,7 @@ class App extends Component {
 					<img src="/assets/img/bus-sign.svg" className="transportation-icon" alt="" />
 				</div>
         <p className="font-small-gray flight-header-pos">
-          {startDate} - {endDate} ⎟ {segment.airline} ({segment.number})
+          {startDate} - {endDate} ⎟ {segment.name} ({segment.service})
         </p>
         <div className="trip-overview">
           <p className="font-large-gray flight-firstline-pos">{segment.departureLocation.city}, {segment.departureLocation.country}</p>
@@ -312,6 +312,28 @@ class App extends Component {
     )
   }
 
+  printTripOverview(trip) {
+
+    const df = this.state.dateFormatterDate;
+  
+    const startDate = df.format(trip.startDateObj)
+    const endDate = df.format(trip.endDateObj)
+
+
+    return (
+      <div className="left-float-cleared left-margin">
+          <div className="attributes">
+            <p className="font-attribute-categories left-float-cleared">Start Date</p>
+            <p className="font-medium-gray left-float-cleared">{startDate}</p>
+          </div>
+          <div className="attributes">
+            <p className="font-attribute-categories left-float-cleared">End Date</p>
+            <p className="font-medium-gray left-float-cleared">{endDate}</p>
+          </div>
+      </div>
+    )
+  }
+
   printAccomodation(segment) {
 
     return (
@@ -352,23 +374,21 @@ class App extends Component {
     );
   }
 
-  printDateColumn(day, dayIndex, segmentIndexInDay, rowspan){
+  printDateColumn(day, dayIndex, segmentIndexInDay){
 
-    if(segmentIndexInDay == 0 && day.length == 1){
+    if(segmentIndexInDay == 0){
+
+      var dateString = day[0];
+      if(day.length == 2){
+        dateString = dateString + " - " + day[1];
+      }
+
       return(
-        <td className="date" rowSpan={rowspan}>
-          <p className="main-date">{day[0]}</p>
-        </td> 
-      )
-    
-    }else if(segmentIndexInDay == 0 && day.length == 2){
-      return(
-        <td className="date" rowSpan={rowspan}>
-          <p className="main-date">{day[0]}<br />-<br />{day[1]}</p>
+        <td className="date">
+          <p className="main-date">{dateString}</p>
         </td> 
       )
     }
-
   }
 
   printSegmentColumn(segment, segmentIndexInDay, day){
@@ -393,24 +413,30 @@ class App extends Component {
       return <h3>no data</h3>
     }
 
+    this.setDateAttributes(this.state.trip);
     this.getDaySegments(this.state.segments);
 
     return (
       <div className="App">
         <header><div className="header">GO TRAVEL</div></header>
-        <h1>{this.state.trip.name}</h1> 
-        <table className="main-table"><tbody>
+        <p className="tripname">{this.state.trip.name}</p> 
+        <p>{this.printTripOverview(this.state.trip)}</p>
+        <br />
+        <table className="main-table">
         {
           Array.from(this.state.myday).map((day, dayIndex) => 
             Array.from(this.state.mytrip[dayIndex]).map((segment, segmentIndexInDay) => 
-              <tr>
-                {this.printDateColumn(day, dayIndex, segmentIndexInDay, this.state.mytrip[dayIndex].length)}
-                {this.printSegmentColumn(segment, segmentIndexInDay, day)}
-              </tr>
+              <tbody>
+                <tr>
+                  {this.printDateColumn(day, dayIndex, segmentIndexInDay, this.state.mytrip[dayIndex].length)}
+                </tr><tr>
+                  {this.printSegmentColumn(segment, segmentIndexInDay, day)}
+                </tr>
+              </tbody>
             )
           ) 
         }
-      </tbody></table>
+      </table>
       </div>
     );
   }
