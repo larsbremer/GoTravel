@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      trip: [],
+      rawTrip: [],
       dayList: [],
       mytrip: [],
       dateFormatterDate: new Intl.DateTimeFormat('en-GB', { 
@@ -26,7 +26,7 @@ class App extends Component {
   componentDidMount() {
 
     fetch('http://localhost:8080/GoTravelBackend/rest/trips/5b635c63e47a545f722bd893?expand=true')
-       .then(response => response.json()).then(data => this.setState({ trip: data }));    
+       .then(response => response.json()).then(data => this.setState({ rawTrip: data }));    
   }
 
   getDateRangeString(currentDaySegments) {
@@ -62,7 +62,7 @@ class App extends Component {
 
     var allSegments = []
 
-    this.state.trip.segments.map(segment => {
+    this.state.rawTrip.segments.map(segment => {
 
       // Make evening accommodation one element
       allSegments.push(segment)
@@ -76,9 +76,9 @@ class App extends Component {
     var currentDaySegments = []
     var currentDay = moment("01-01-1000", "MM-DD-YYYY");
 
-    console.log(this.state.trip.segments)
+    console.log(this.state.rawTrip.segments)
 
-    this.state.trip.segments.map(segment => {
+    this.state.rawTrip.segments.map(segment => {
 
       this.setAttributes(segment)
       this.setDateAttributes(segment)
@@ -408,18 +408,18 @@ class App extends Component {
 
   render() {
 
-    if(this.state.trip.length === 0){
+    if(this.state.rawTrip.length === 0){
       return <h3>no data</h3>
     }
 
-    this.setDateAttributes(this.state.trip);
-    this.getDaySegments(this.state.trip.segments);
+    this.setDateAttributes(this.state.rawTrip);
+    this.getDaySegments(this.state.rawTrip.segments);
 
     return (
       <div className="App">
         <header><div className="header">GO TRAVEL</div></header>
-        <p className="tripname">{this.state.trip.name}</p> 
-        <p>{this.printTripOverview(this.state.trip)}</p>
+        <p className="tripname">{this.state.rawTrip.name}</p> 
+        <p>{this.printTripOverview(this.state.rawTrip)}</p>
         <br />
         <table className="main-table">
         {
