@@ -446,6 +446,9 @@ class App extends Component {
       return <h3>no data</h3>
     }
 
+    this.state.trip = [];
+    this.state.dayList = [];
+    
     this.setDateAttributes(this.state.rawTrip);
     this.getDaySegments(this.state.rawTrip.segments);
 
