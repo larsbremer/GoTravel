@@ -10,7 +10,7 @@ import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.Location;
 import com.larsbremer.gotravel.model.Trip;
 
-public class PopulateDemoData {
+public class PopulateDemoDataPeru {
 
 	private static TripController tripController = new TripController();
 
