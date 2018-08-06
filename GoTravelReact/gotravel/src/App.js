@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       trip: [],
       segments: [],
-      myday: [],
+      dayList: [],
       mytrip: [],
       dateFormatterDate: new Intl.DateTimeFormat('en-GB', { 
         weekday: 'short',
@@ -94,7 +94,7 @@ class App extends Component {
 
         if (currentDaySegments.length > 0) {
           this.state.mytrip.push(currentDaySegments)
-          this.state.myday.push(this.getDateRangeString(currentDaySegments))
+          this.state.dayList.push(this.getDateRangeString(currentDaySegments))
        }
 
 	      currentDaySegments = [ segment ]
@@ -104,10 +104,10 @@ class App extends Component {
     })
 
     this.state.mytrip.push(currentDaySegments)
-    this.state.myday.push(this.getDateRangeString(currentDaySegments))
+    this.state.dayList.push(this.getDateRangeString(currentDaySegments))
 
-    console.log("myday: "+this.state.myday)
-    console.log(this.state.myday)
+    console.log("dayList: "+this.state.dayList)
+    console.log(this.state.dayList)
     console.log("mytrip: "+this.state.mytrip)
     console.log(this.state.mytrip)
 
@@ -424,7 +424,7 @@ class App extends Component {
         <br />
         <table className="main-table">
         {
-          Array.from(this.state.myday).map((day, dayIndex) => 
+          Array.from(this.state.dayList).map((day, dayIndex) => 
             Array.from(this.state.mytrip[dayIndex]).map((segment, segmentIndexInDay) => 
               <tbody>
                 <tr>
