@@ -9,7 +9,6 @@ class App extends Component {
 
     this.state = {
       trip: [],
-      segments: [],
       dayList: [],
       mytrip: [],
       dateFormatterDate: new Intl.DateTimeFormat('en-GB', { 
@@ -27,7 +26,7 @@ class App extends Component {
   componentDidMount() {
 
     fetch('http://localhost:8080/GoTravelBackend/rest/trips/5b635c63e47a545f722bd893?expand=true')
-       .then(response => response.json()).then(data => this.setState({ trip: data,  segments: data.segments }));    
+       .then(response => response.json()).then(data => this.setState({ trip: data }));    
   }
 
   getDateRangeString(currentDaySegments) {
@@ -63,7 +62,7 @@ class App extends Component {
 
     var allSegments = []
 
-    this.state.segments.map(segment => {
+    this.state.trip.segments.map(segment => {
 
       // Make evening accommodation one element
       allSegments.push(segment)
@@ -77,9 +76,9 @@ class App extends Component {
     var currentDaySegments = []
     var currentDay = moment("01-01-1000", "MM-DD-YYYY");
 
-    console.log(this.state.segments)
+    console.log(this.state.trip.segments)
 
-    this.state.segments.map(segment => {
+    this.state.trip.segments.map(segment => {
 
       this.setAttributes(segment)
       this.setDateAttributes(segment)
@@ -409,12 +408,12 @@ class App extends Component {
 
   render() {
 
-    if(this.state.segments.length === 0){
+    if(this.state.trip.length === 0){
       return <h3>no data</h3>
     }
 
     this.setDateAttributes(this.state.trip);
-    this.getDaySegments(this.state.segments);
+    this.getDaySegments(this.state.trip.segments);
 
     return (
       <div className="App">
