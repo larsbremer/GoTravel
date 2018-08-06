@@ -34,7 +34,7 @@ app.controller('TripCtrl', [ '$scope', '$http', '$location', '$routeParams', fun
     for ( var segmentId in currentDaySegments) {
 
       var segment = currentDaySegments[segmentId]
-
+console.log(segmentId)
       if (segmentId == 0) {
 	startDate = segment.startDateReduced
       }
