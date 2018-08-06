@@ -7,11 +7,22 @@
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
+header {
+  background-color: #62A9FF;
+  height: 50px;
+  line-height: 50px;
   padding: 20px;
   color: white;
+  text-align: left;
+}
+
+div.header {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal;
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 28px;
 }
 
 .App-title {
@@ -121,7 +132,11 @@ div.attributes {
 }
 
 td.flight {
-	
+	background-color: #FFF2F2;
+}
+
+td.datesegment {
+	background-color: #F9FDFF;
 }
 
 p.flight-header-pos {

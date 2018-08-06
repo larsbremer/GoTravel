@@ -376,13 +376,13 @@ class App extends Component {
           if(segment.type === "flight"){
             return(<td className="segments flight"> {this.printFlight(segment)}</td>);
           }else if(segment.type === "trainride"){
-            return(<td className="segments flight"> {this.printTrainRide(segment)}</td>);
+            return(<td className="segments trainride"> {this.printTrainRide(segment)}</td>);
           }else if(segment.type === "busride"){
-            return(<td className="segments flight">{this.printBusRide(segment)}</td>);
+            return(<td className="segments busride">{this.printBusRide(segment)}</td>);
           }else if(segment.type === "accommodation"){
             return(<td className="segments accomodation"> {this.printAccomodation(segment)}</td>);
           }else if(segment.type === "datesegment"){
-            return(<td className="segments flight"> {this.printDateSegment(segment)}</td>);
+            return(<td className="segments datesegment"> {this.printDateSegment(segment)}</td>);
           }
   }
 
@@ -397,6 +397,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <header><div className="header">GO TRAVEL</div></header>
         <h1>{this.state.trip.name}</h1> 
         <table className="main-table"><tbody>
         {
