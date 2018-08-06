@@ -145,11 +145,9 @@ div.attributes {
 }
 
 td.flight {
-	background-color: rgb(253, 245, 245);
 }
 
 td.datesegment {
-	background-color: #F9FDFF;
 }
 
 p.flight-header-pos {
@@ -204,6 +202,7 @@ td.segments {
 	max-width: 800px;
 	position: relative;
 	border-collapse: collapse;
+	background-color: #F8FBFE;
 }
 
 td.date {
