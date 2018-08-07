@@ -24,7 +24,7 @@ public class TripController {
 
 	public List<Trip> getTrips() throws Exception {
 
-		return dbController.searchTrips(null, null, null);
+		return dbController.searchTrips(new Trip(), null, null);
 	}
 
 	public Trip getTrip(String id) throws Exception {

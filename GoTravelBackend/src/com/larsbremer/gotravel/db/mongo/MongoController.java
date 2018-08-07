@@ -108,8 +108,8 @@ public class MongoController implements DBController {
 
 			FindIterable<Document> search = mongoCollection.find();
 
-			Bson bsonFilter = MongoParser.convertPojoToBson(filter);
 			if (filter != null) {
+				Bson bsonFilter = MongoParser.convertPojoToBson(filter);
 				search.filter(bsonFilter);
 			}
 
