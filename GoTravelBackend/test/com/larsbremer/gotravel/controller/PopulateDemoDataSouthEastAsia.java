@@ -33,6 +33,7 @@ public class PopulateDemoDataSouthEastAsia {
 		Location bangkok = createLocation("Bangkok", "Thailand");
 		Location thanaleng = createLocation("Thanaleng", "Laos");
 		Location nongkhai = createLocation("Nong Khai", "Thailand");
+		Location siemriep = createLocation("Siem Riep", "Cambodia");
 
 		// Acccommodation
 //		String url = "https://secure.booking.com/myreservations.html?aid=304142;label=gen173nr-1DCAEoggJCAlhYSDNiBW5vcmVmaIkBiAEBmAEHuAEHyAEN2AED6AEBkgIBeagCAw;sid=843d82863c6586b1e75a5583e8cb45c2;auth_key=r5UBuUl3VYXp2wDF&";
@@ -52,6 +53,9 @@ public class PopulateDemoDataSouthEastAsia {
 
 		System.out.println(createFlight(createdTrip.getId(), "KLM Cityhopper", "KL-1749", null, null, "Embraer 175",
 				amsterdam, createDate(2018, 11, 2, 21, 20), luxembourg, createDate(2018, 11, 2, 22, 20)));
+
+		System.out.println(createFlight(createdTrip.getId(), "Hong Kong Express", null, null, null, null, siemriep,
+				createDate(2018, 10, 29, 11, 15), hongkong, createDate(2018, 10, 29, 14, 40)));
 
 		// Trains
 		System.out.println(createTrainRide(createdTrip.getId(), "Mainline Train", "25", bangkok,

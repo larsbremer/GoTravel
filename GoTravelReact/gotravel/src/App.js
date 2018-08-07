@@ -9,8 +9,8 @@ class App extends Component {
 
     this.state = {
       expand: {},
-      rawTrip: [],
       dayList: [],
+      daySegments: [],
       trip: [],
       dateFormatterDate: new Intl.DateTimeFormat('en-GB', { 
         weekday: 'short',
@@ -26,8 +26,12 @@ class App extends Component {
 
   componentDidMount() {
     // 5b635c63e47a545f722bd893
-    fetch('http://localhost:8080/GoTravelBackend/rest/trips/5b68b098883be31d036ce888?expand=true')
-       .then(response => response.json()).then(data => this.setState({ rawTrip: data }));    
+    fetch('http://localhost:8080/GoTravelBackend/rest/trips/5b69fc20883be32306320ade?expand=true')
+       .then(response => response.json()).then(trip => {
+        this.setState({trip: trip})
+        this.setDateAttributes(trip);
+        this.getDaySegments(trip);
+       });    
   }
 
   getDateRangeString(currentDaySegments) {
@@ -39,7 +43,7 @@ class App extends Component {
 
       var segment = currentDaySegments[segmentId]
       
-      if (segmentId == 0) {
+      if (Number(segmentId) === 0) {
 	      startDate = segment.startDateReduced
       }
 
@@ -59,11 +63,11 @@ class App extends Component {
     return m1.date() === m2.date() && m1.month() === m2.month() && m1.year() === m2.year()
   }
 
-  getDaySegments(segments){
+  getDaySegments(trip){
 
     var allSegments = []
 
-    this.state.rawTrip.segments.map(segment => {
+    trip.segments.forEach(segment => {
 
       // Make evening accommodation one element
       allSegments.push(segment)
@@ -77,12 +81,14 @@ class App extends Component {
     var currentDaySegments = []
     var currentDay = moment("01-01-1000", "MM-DD-YYYY");
 
-    this.state.rawTrip.segments.map(segment => {
+    var segments = []
+    var dayList = []
+
+    trip.segments.forEach(segment => {
 
       this.setAttributes(segment)
       this.setDateAttributes(segment)
       
-      var isOneDaySegment = this.isSameDay(segment.startDateObj, segment.endDateObj);
       var isSameDayAsBefore = this.isSameDay(currentDay, segment.startDateObj);
       
       if (isSameDayAsBefore || segment.type === 'accommodation') {
@@ -91,18 +97,21 @@ class App extends Component {
       } else {
 
         if (currentDaySegments.length > 0) {
-          this.state.trip.push(currentDaySegments)
-          this.state.dayList.push(this.getDateRangeString(currentDaySegments))
+          segments.push(currentDaySegments)
+          dayList.push(this.getDateRangeString(currentDaySegments))
        }
 
 	      currentDaySegments = [ segment ]
-	      currentDay = segment.startDateObj
+        currentDay = segment.startDateObj
       }
       
     })
 
-    this.state.trip.push(currentDaySegments)
-    this.state.dayList.push(this.getDateRangeString(currentDaySegments))
+    segments.push(currentDaySegments)
+    dayList.push(this.getDateRangeString(currentDaySegments))
+
+    
+    this.setState({daySegments: segments, dayList: dayList})
   }
 
 
@@ -146,12 +155,11 @@ class App extends Component {
 
     segment.duration = durationString
 
-    if(segment.type == "datesegment"){
-      segment.activities.map(activity => {
+    if(segment.type === "datesegment"){
+      segment.activities.forEach(activity => {
         this.setDateAttributes(activity)
       })
     }
-
   }
 
   setAttributes(segment) {
@@ -299,7 +307,7 @@ class App extends Component {
         <div className="left-float-cleared top-margin">
         {
 
-          Object.keys(segment.attributes).map((key, index) => {
+      Object.keys(segment.attributes).map((key, index) => {
 
             const value = segment.attributes[key];
 
@@ -310,7 +318,7 @@ class App extends Component {
                   <a href={value} className="font-medium-gray left-float-cleared" target="_blank">link</a>
                 </div>
               )
-            }else if(key !== "URL" || value === "-"){
+            }else{
               return(
                 <div className="attributes">
                   <p className="font-attribute-categories left-float-cleared">{key}</p>
@@ -332,7 +340,6 @@ class App extends Component {
   
     const startDate = df.format(trip.startDateObj)
     const endDate = df.format(trip.endDateObj)
-    
 
     return (
       <div className="left-float-cleared left-margin">
@@ -385,7 +392,7 @@ class App extends Component {
         if(activity.startDate && !activity.endDate){
           return (<p className="font-activity">{startDate}: {activity.note}</p>)
         }else if(activity.startDate && activity.endDate){
-          return (<p className="font-activity">{startDate} - {endDate}: {activity.note}</p>)
+          return (<p className="font-activity" key={activity.id}>{startDate} - {endDate}: {activity.note}</p>)
         }else{
           return (<p className="font-activity">{activity.note}</p>)
         }
@@ -395,10 +402,10 @@ class App extends Component {
 
   printDateColumn(day, dayIndex, segmentIndexInDay){
 
-    if(segmentIndexInDay == 0){
+    if(segmentIndexInDay === 0){
 
       var dateString = day[0];
-      if(day.length == 2){
+      if(day.length === 2){
         dateString = dateString + " - " + day[1];
       }
 
@@ -412,7 +419,6 @@ class App extends Component {
 
   toggleExpand(id){
 
-    console.log(this.state.expand)
     var expand = this.state.expand;
 
     if(this.isExpanded(id)){
@@ -426,45 +432,39 @@ class App extends Component {
 
   printSegmentColumn(segment, segmentIndexInDay, day){
 
-          if(segment.type === "flight"){
-            return(<td className="segments flight" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printFlight(segment)}</td>);
-          }else if(segment.type === "trainride"){
-            return(<td className="segments trainride" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printTrainRide(segment)}</td>);
-          }else if(segment.type === "busride"){
-            return(<td className="segments busride" onClick={this.toggleExpand.bind(this, segment.id)}>{this.printBusRide(segment)}</td>);
-          }else if(segment.type === "accommodation"){
-            return(<td className="segments accomodation" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printAccomodation(segment)}</td>);
-          }else if(segment.type === "datesegment"){
-            return(<td className="segments datesegment" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printDateSegment(segment)}</td>);
-          }
+    if(segment.type === "flight"){
+      return(<td className="segments flight" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printFlight(segment)}</td>);
+    }else if(segment.type === "trainride"){
+      return(<td className="segments trainride" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printTrainRide(segment)}</td>);
+    }else if(segment.type === "busride"){
+      return(<td className="segments busride" onClick={this.toggleExpand.bind(this, segment.id)}>{this.printBusRide(segment)}</td>);
+    }else if(segment.type === "accommodation"){
+      return(<td className="segments accomodation" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printAccomodation(segment)}</td>);
+    }else if(segment.type === "datesegment"){
+      return(<td className="segments datesegment" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printDateSegment(segment)}</td>);
+    }
   }
 
 
   render() {
 
-    if(this.state.rawTrip.length === 0){
+    if(this.state.daySegments.length === 0){
       return <h3>no data</h3>
     }
-
-    this.state.trip = [];
-    this.state.dayList = [];
-    
-    this.setDateAttributes(this.state.rawTrip);
-    this.getDaySegments(this.state.rawTrip.segments);
 
     return (
       <div className="App">
         <header><div className="header">GO TRAVEL</div></header>
-        <p className="tripname">{this.state.rawTrip.name}</p> 
-        <p>{this.printTripOverview(this.state.rawTrip)}</p>
+        <p className="tripname">{this.state.trip.name}</p> 
+        <div>{this.printTripOverview(this.state.trip)}</div>
         <br />
         <table className="main-table">
         {
           Array.from(this.state.dayList).map((day, dayIndex) => 
-            Array.from(this.state.trip[dayIndex]).map((segment, segmentIndexInDay) => 
-              <tbody>
+            Array.from(this.state.daySegments[dayIndex]).map((segment, segmentIndexInDay) => 
+              <tbody key={dayIndex+"."+segmentIndexInDay}>
                 <tr>
-                  {this.printDateColumn(day, dayIndex, segmentIndexInDay, this.state.trip[dayIndex].length)}
+                  {this.printDateColumn(day, dayIndex, segmentIndexInDay, this.state.daySegments[dayIndex].length)}
                 </tr><tr>
                   {this.printSegmentColumn(segment, segmentIndexInDay, day)}
                 </tr>
