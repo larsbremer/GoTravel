@@ -50,6 +50,25 @@ public class TripController {
 		return trip;
 	}
 
+	public Flight getFlight(String id) throws Exception {
+
+		Flight flightFilter = new Flight();
+		flightFilter.setId(id);
+
+		List<Flight> flights = dbController.searchFlights(flightFilter, 0, 1);
+
+		if (flights == null || flights.isEmpty()) {
+			return null;
+		}
+
+		return flights.get(0);
+	}
+
+	public Flight updateFlight(String flightId, Flight newFlight) throws Exception {
+
+		return dbController.updateFlight(flightId, newFlight);
+	}
+
 	private void expand(Trip trip) throws Exception {
 
 		expandTransportations(trip);

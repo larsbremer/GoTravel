@@ -1,6 +1,6 @@
 package com.larsbremer.gotravel.model;
 
-public abstract class DatabaseItem {
+public class DatabaseItem {
 
 	private String id;
 

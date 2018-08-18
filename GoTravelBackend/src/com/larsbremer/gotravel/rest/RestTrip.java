@@ -1,7 +1,8 @@
 package com.larsbremer.gotravel.rest;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -13,44 +14,42 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.larsbremer.gotravel.controller.TripController;
-import com.larsbremer.gotravel.model.Flight;
+import com.larsbremer.gotravel.model.Trip;
 
 import io.swagger.annotations.Api;
 
-@Path("/flights")
-@Api(value = "/flights")
-public class RestFlight {
+@Path("/trips")
+@Api(value = "/trips")
+public class RestTrip {
 
-	private static final Logger logger = LogManager.getLogger(RestFlight.class);
+	private static final Logger logger = LogManager.getLogger(RestTrip.class);
 
 	@GET
-	@Path("/{flight-id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response retrieveFlight(@PathParam("flight-id") String flightId) {
+	public Response retrieveTrips() {
 
 		try {
-			Flight flight = new TripController().getFlight(flightId);
-			return Response.ok(flight).build();
+			List<Trip> trips = new TripController().getTrips();
+			return Response.ok(trips).build();
 
 		} catch (Exception e) {
-			logger.error("Error retrieving flight", e);
+			logger.error("Error retrieving trips", e);
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
 	}
 
-	@PUT
-	@Path("/{flight-id}")
+	@GET
+	@Path("/{trip-id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateFlight(@PathParam("flight-id") String flightId, Flight flight) {
+	public Response retrieveTrip(@PathParam("trip-id") String tripId) {
 
 		try {
-			Flight updatedFlight = new TripController().updateFlight(flightId, flight);
-			return Response.ok(updatedFlight).build();
+			Trip trip = new TripController().getTrip(tripId, true);
+			return Response.ok(trip).build();
 
 		} catch (Exception e) {
-			logger.error("Error: ", e);
+			logger.error("Error retrieving trip", e);
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
 	}
-
 }

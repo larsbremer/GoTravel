@@ -37,4 +37,6 @@ public interface DBController {
 
 	List<BusRide> searchBusRides(BusRide busRideFilter, Integer offset, Integer size);
 
+	Flight updateFlight(String flightId, Flight newFlight);
+
 }

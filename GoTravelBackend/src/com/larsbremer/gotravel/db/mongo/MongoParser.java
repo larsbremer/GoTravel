@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.larsbremer.gotravel.model.Segment;
+import com.larsbremer.gotravel.model.DatabaseItem;
 import com.mongodb.BasicDBObject;
 
 public class MongoParser {
@@ -30,7 +30,7 @@ public class MongoParser {
 
 		BasicDBObject bsonFilter = BasicDBObject.parse(jsonString);
 
-		if (obj instanceof Segment) {
+		if (obj instanceof DatabaseItem) {
 			convertToMongoId(obj, bsonFilter);
 			bsonFilter.remove("type");
 		}
@@ -46,7 +46,7 @@ public class MongoParser {
 
 		convertDatePlaceholdersToDate(doc);
 
-		if (obj instanceof Segment) {
+		if (obj instanceof DatabaseItem) {
 			convertToMongoId(obj, doc);
 			doc.remove("type");
 		}
@@ -91,7 +91,7 @@ public class MongoParser {
 	}
 
 	private static void convertToMongoId(Object obj, Map<String, Object> bsonFilter) {
-		String pojoId = ((Segment) obj).getId();
+		String pojoId = ((DatabaseItem) obj).getId();
 
 		if (pojoId != null) {
 			ObjectId mongoId = new ObjectId(pojoId);

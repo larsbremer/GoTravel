@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import moment from 'moment'
+import Flight from './Flight.js';
+import Attributes from './Attributes.js';
+import moment from 'moment';
+import * as utils from './Utils.js';
 
 class Trip extends Component {
 
@@ -17,20 +20,15 @@ class Trip extends Component {
         weekday: 'short',
         month: '2-digit', 
         day: '2-digit' 
-      }),
-      dateFormatterHours: new Intl.DateTimeFormat('en-GB', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
       })
     };
   }
 
   componentDidMount() {
-    // 5b635c63e47a545f722bd893
     fetch('http://localhost:8080/GoTravelBackend/rest/trips/'+this.state.tripId+'?expand=true')
        .then(response => response.json()).then(trip => {
         this.setState({trip: trip})
-        this.setDateAttributes(trip);
+        utils.convertStringsToDateObjects(trip);
         this.getDaySegments(trip);
        });    
   }
@@ -88,7 +86,7 @@ class Trip extends Component {
     trip.segments.forEach(segment => {
 
       this.setAttributes(segment)
-      this.setDateAttributes(segment)
+      utils.convertStringsToDateObjects(segment)
       
       var isSameDayAsBefore = this.isSameDay(currentDay, segment.startDateObj);
       
@@ -116,52 +114,7 @@ class Trip extends Component {
   }
 
 
-  setDateAttributes(segment) {
-
-    var timeFormat = "YYYY-MM-DD'T'HH:mm:ss.SSSZ"
-
-    var startDate = segment.startDate
-    var startDateObj = moment.utc(startDate, timeFormat)
-
-    var endDate = segment.endDate
-    var endDateObj = moment.utc(endDate, timeFormat)
-
-    segment.startHours = startDateObj.format('HH:mm');
-    segment.endHours = endDateObj.format('HH:mm');
-
-    segment.startDateReduced = startDateObj.format('ddd, DD.MM.');
-    segment.endDateReduced = endDateObj.format('ddd, DD.MM.');
-
-    segment.startDateObj = startDateObj
-    segment.endDateObj = endDateObj
-
-    var durationMinutes = Math.round((endDateObj.format('x') - startDateObj.format('x')) / (1000 * 60));
-
-    var days = Math.floor(durationMinutes / (24 * 60))
-    var remainingMinutes = durationMinutes - (days * 24 * 60)
-    var hours = Math.floor(remainingMinutes / 60)
-    remainingMinutes = remainingMinutes - (hours * 60)
-    var minutes = remainingMinutes
-
-    var durationString = ""
-    if (days > 0) {
-      durationString += days + "d "
-    }
-
-    if (days > 0 || hours > 0) {
-      durationString += hours + "h "
-    }
-
-    durationString += minutes + "min"
-
-    segment.duration = durationString
-
-    if(segment.type === "datesegment"){
-      segment.activities.forEach(activity => {
-        this.setDateAttributes(activity)
-      })
-    }
-  }
+  
 
   setAttributes(segment) {
 
@@ -203,40 +156,11 @@ class Trip extends Component {
 
   }
 
-  printFlight(segment) {
-
-    const df = this.state.dateFormatterHours;
-  
-    const startDate = df.format(segment.startDateObj)
-    const endDate = df.format(segment.endDateObj)
-
-    return (
-      
-      <div>
-        <div>
-					<img src="/assets/img/plane-sign.svg" className="transportation-icon" alt="" />
-				</div>
-        <p className="font-small-gray flight-header-pos">
-          {startDate} - {endDate} ⎟ {segment.airline} ({segment.number})
-        </p>
-        <div className="trip-overview">
-          <p className="font-large-gray flight-firstline-pos">{segment.departureLocation.city}, {segment.departureLocation.country}</p>
-          <p className="font-large-gray flight-secondline-pos">{segment.arrivalLocation.city}, {segment.arrivalLocation.country}</p>
-          <div className="circle circle-first-pos"></div>
-          <div className="circle circle-second-pos"></div>
-          <div className="line"></div>
-        </div>
-        {this.printAttributes(segment)}
-      </div>
-    );
-  }
 
   printTrainRide(segment) {
 
-    const df = this.state.dateFormatterHours;
-  
-    const startDate = df.format(segment.startDateObj)
-    const endDate = df.format(segment.endDateObj)
+    const startDate = utils.formatHours(segment.startDateObj)
+    const endDate = utils.formatHours(segment.endDateObj)
 
     return (
       
@@ -254,7 +178,7 @@ class Trip extends Component {
           <div className="circle circle-second-pos"></div>
           <div className="line"></div>
         </div>
-        {this.printAttributes(segment)}
+        <Attributes attributes={segment.attributes}/>
       </div>
     );
   }
@@ -262,10 +186,8 @@ class Trip extends Component {
 
   printBusRide(segment) {
 
-    const df = this.state.dateFormatterHours;
-  
-    const startDate = df.format(segment.startDateObj)
-    const endDate = df.format(segment.endDateObj)
+    const startDate = utils.formatHours(segment.startDateObj)
+    const endDate = utils.formatHours(segment.endDateObj)
 
     return (
       
@@ -283,7 +205,7 @@ class Trip extends Component {
           <div className="circle circle-second-pos"></div>
           <div className="line"></div>
         </div>
-        {this.printAttributes(segment)}
+        <Attributes attributes={segment.attributes}/>
       </div>
     );
   }
@@ -298,41 +220,6 @@ class Trip extends Component {
     }
 
     return false;
-  }
-
-  printAttributes(segment) {
-
-    if(this.isExpanded(segment.id)){
-
-      return (
-        <div className="left-float-cleared top-margin">
-        {
-
-      Object.keys(segment.attributes).map((key, index) => {
-
-            const value = segment.attributes[key];
-
-            if(key === "URL" && value !== "-"){
-              return(
-                <div className="attributes">
-                  <p className="font-attribute-categories left-float-cleared">Link</p>
-                  <a href={value} className="font-medium-gray left-float-cleared" target="_blank">link</a>
-                </div>
-              )
-            }else{
-              return(
-                <div className="attributes">
-                  <p className="font-attribute-categories left-float-cleared">{key}</p>
-                  <p className="font-medium-gray left-float-cleared">{value}</p>
-                </div>
-              )
-            }
-          })
-        }
-        </div>
-      )
-
-    }
   }
 
   printTripOverview(trip) {
@@ -354,7 +241,7 @@ class Trip extends Component {
           </div>
           <div className="attributes">
             <p className="font-attribute-categories left-float-cleared">Duration</p>
-            <p className="font-medium-gray left-float-cleared">{trip.duration}</p>
+            <p className="font-medium-gray left-float-cleared">{utils.calculateDuration(trip)}</p>
           </div>
       </div>
     )
@@ -373,7 +260,7 @@ class Trip extends Component {
             <a href={segment.url} className="font-medium-gray left-float-cleared" target="_blank">link</a>
           </div>
         </div>
-        {this.printAttributes(segment)}
+        <Attributes attributes={segment.attributes}/>
       </div>
     );
   }
@@ -381,20 +268,18 @@ class Trip extends Component {
 
   printDateSegment(segment) {
 
-    const df = this.state.dateFormatterHours;
-  
     return (
       segment.activities.map(activity => {
         
-        const startDate = df.format(activity.startDateObj)
+        const startDate = utils.formatHours(activity.startDateObj)
         
         if(activity.startDate && !activity.endDate){
           return (<p className="font-activity">{startDate}: {activity.note}</p>)
         }else if(activity.startDate && activity.endDate){
-          const endDate = df.format(activity.endDateObj)
+          const endDate = utils.formatHours(activity.endDateObj)
           return (<p className="font-activity" key={activity.id}>{startDate} - {endDate}: {activity.note}</p>)
         }else{
-          return (<p className="font-activity">{activity.note}</p>)
+          return (<p className="font-activity" key={activity.id}>{activity.note}</p>)
         }
       })
     );
@@ -433,7 +318,7 @@ class Trip extends Component {
   printSegmentColumn(segment, segmentIndexInDay, day){
 
     if(segment.type === "flight"){
-      return(<td className="segments flight" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printFlight(segment)}</td>);
+      return(<td className="segments flight"><Flight segment={segment}/></td>);
     }else if(segment.type === "trainride"){
       return(<td className="segments trainride" onClick={this.toggleExpand.bind(this, segment.id)}> {this.printTrainRide(segment)}</td>);
     }else if(segment.type === "busride"){

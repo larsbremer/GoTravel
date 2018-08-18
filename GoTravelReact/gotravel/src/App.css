@@ -129,6 +129,12 @@ div.trip-overview {
 	margin-bottom: 0px;
 }
 
+.left-float {
+	float: left;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 div.attributes {
 	float: left;
 	min-width: 70px;
@@ -194,6 +200,11 @@ table.main-table {
 	border-collapse: collapse;
 }
 
+table.trips-table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
 
 td.segments {
 	padding: 10px;
@@ -237,4 +248,30 @@ td.date {
 	position: absolute;
 	border-left: 2px solid rgb(83, 83, 83);
 	height: 25px;
+}
+
+.modal {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    right: auto;
+	bottom: auto;
+	padding: 2em;
+	width: 300px;
+	background-color: rgb(255, 255, 255);
+	transform: translate(-30%, -30%);
+	border: 1px solid rgb(83, 83, 83);
+	border-collapse: collapse;
+  }
+
+input.formposition {
+	position: absolute;
+	left: 170px;
+}
+
+input.formsize {
+	font-family: Verdana;
+	font-size: 14px;
+	color: rgb(83, 83, 83);
+	font-weight: normal;
 }

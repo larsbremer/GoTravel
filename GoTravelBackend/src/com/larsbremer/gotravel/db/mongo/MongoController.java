@@ -14,6 +14,7 @@ import com.larsbremer.gotravel.db.mongo.MongoConnection.Collection;
 import com.larsbremer.gotravel.model.Accommodation;
 import com.larsbremer.gotravel.model.Activity;
 import com.larsbremer.gotravel.model.BusRide;
+import com.larsbremer.gotravel.model.DatabaseItem;
 import com.larsbremer.gotravel.model.Flight;
 import com.larsbremer.gotravel.model.TrainRide;
 import com.larsbremer.gotravel.model.Trip;
@@ -101,6 +102,28 @@ public class MongoController implements DBController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T updateMongoObject(String id, T obj, Collection collection) {
+
+		try {
+
+			MongoCollection<Document> mongoCollection = MongoConnection.getDatabaseCollection(collection);
+
+			Document doc = MongoParser.convertPojoToDocument(obj);
+
+			DatabaseItem dbItem = new DatabaseItem();
+			dbItem.setId(id);
+			Bson idFilter = MongoParser.convertPojoToBson(dbItem);
+
+			mongoCollection.updateOne(idFilter, new Document("$set", doc));
+
+			return (T) MongoParser.getObject(doc, obj.getClass());
+
+		} catch (IOException | ParseException e) {
+			throw new ParsingException(e);
+		}
+	}
+
 	public <T> List<T> searchMongoObject(T filter, Integer offset, Integer size, Collection collection) {
 
 		try {
@@ -145,5 +168,10 @@ public class MongoController implements DBController {
 	@Override
 	public List<BusRide> searchBusRides(BusRide filter, Integer offset, Integer size) {
 		return searchMongoObject(filter, offset, size, Collection.BUS_RIDE);
+	}
+
+	@Override
+	public Flight updateFlight(String flightId, Flight newFlight) {
+		return updateMongoObject(flightId, newFlight, Collection.FLIGHT);
 	}
 }
