@@ -1,10 +1,7 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  margin: auto;
+  width: 600px;
 }
 
 header {
@@ -23,19 +20,6 @@ div.header {
 	font-family: Verdana;
 	font-weight: bold;
 	font-size: 28px;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 p.font-small-gray {
@@ -66,13 +50,15 @@ p.font-large-gray {
 	font-weight: normal;
 }
 
-p.tripname {
+p.font-xlarge{
 	font-family: Verdana;
 	font-size: 24px;
 	color: rgb(83, 83, 83);
 	font-weight: normal;
+}
+
+p.tripname {
 	text-align: left;
-	margin: 20px;
 }
 
 p.font-medium-gray {
@@ -146,15 +132,7 @@ div.attributes {
 	margin-top: 5px;
 }
 
-.left-margin {
-	margin-left: 20px;
-}
 
-td.flight {
-}
-
-td.datesegment {
-}
 
 p.flight-header-pos {
 	padding-top: 0px;
@@ -196,7 +174,7 @@ p.accommodation-sub {
 }
 
 table.main-table {
-	margin: 20px;
+	width: 100%;
 	border-collapse: collapse;
 }
 
@@ -210,7 +188,7 @@ td.segments {
 	padding: 10px;
 	border-top: solid 1px #000;
 	border-bottom: solid 1px #000;
-	max-width: 800px;
+	max-width: 600px;
 	position: relative;
 	border-collapse: collapse;
 	background-color: #F8FBFE;
@@ -251,16 +229,16 @@ td.date {
 }
 
 .modal {
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    right: auto;
-	bottom: auto;
-	padding: 2em;
-	width: 300px;
+	position: relative;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 1em;
+	width: 310px;
 	background-color: rgb(255, 255, 255);
-	transform: translate(-30%, -30%);
 	border: 1px solid rgb(83, 83, 83);
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
 	border-collapse: collapse;
   }
 
@@ -274,4 +252,23 @@ input.formsize {
 	font-size: 14px;
 	color: rgb(83, 83, 83);
 	font-weight: normal;
+}
+
+.button {
+	background: #62A9FF;
+	border:1px solid #314179;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:normal;
+	padding:6px 12px;
+}
+.button:hover {
+	background:linear-gradient(to bottom, #5972a7 5%, #637aad 100%);
+	background-color:#5972a7;
+}
+.button:active {
+	position:relative;
+	top:1px;
 }

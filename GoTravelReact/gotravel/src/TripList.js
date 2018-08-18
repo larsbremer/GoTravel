@@ -41,6 +41,7 @@ class TripList extends Component {
 
     return (
       <div className="App">
+        <p />
         <table className="trips-table">
         {
           Array.from(this.state.trips).map((trip, tripIndex) => 

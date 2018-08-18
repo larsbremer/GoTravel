@@ -13,6 +13,12 @@ const fullFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit' 
 })
 
+const dayFormatter = new Intl.DateTimeFormat('en-GB', { 
+  weekday: 'short',
+  month: '2-digit', 
+  day: '2-digit' 
+})
+
 export function doSomething() {
   return 'something';
 }
@@ -23,6 +29,10 @@ export function formatHours(date) {
 
 export function formatFull(date) {
   return fullFormatter.format(date)
+}
+
+export function formatDay(date) {
+  return dayFormatter.format(date)
 }
 
 

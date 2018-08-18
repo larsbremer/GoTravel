@@ -43,11 +43,11 @@ class Trip extends Component {
       var segment = currentDaySegments[segmentId]
       
       if (Number(segmentId) === 0) {
-	      startDate = segment.startDateReduced
+	      startDate = utils.formatDay(segment.startDateObj)
       }
 
       if (segment.type !== 'accommodation') {
-	      endDate = segment.endDateReduced
+	      endDate = utils.formatDay(segment.endDateObj)
       }
     }
 
@@ -286,9 +286,8 @@ class Trip extends Component {
   }
 
   printDateColumn(day, dayIndex, segmentIndexInDay){
-
     if(segmentIndexInDay === 0){
-
+      
       var dateString = day[0];
       if(day.length === 2){
         dateString = dateString + " - " + day[1];
@@ -339,7 +338,7 @@ class Trip extends Component {
 
     return (
       <div className="App">
-        <p className="tripname">{this.state.trip.name}</p> 
+        <p className="font-xlarge tripname">{this.state.trip.name}</p> 
         <div>{this.printTripOverview(this.state.trip)}</div>
         <br />
         <table className="main-table">

@@ -98,7 +98,7 @@ class Flight extends React.Component {
     return(
       <Modal className="modal" isOpen={this.state.modalIsOpen}
       onRequestClose={this.closeModal} contentLabel="Flight">
-        <p className="tripname">Flight</p> 
+        <p className="font-xlarge">Flight</p> 
         <form onSubmit={this.handleSubmit}>
           <p className="font-large-gray">
             Start Date: 
@@ -119,7 +119,7 @@ class Flight extends React.Component {
           <p className="font-large-gray">
             Airplane: 
             <input className="formposition formsize" type="text" name="airplane" value={this.state.formData.airplane} onChange={this.handleChange} /></p>
-          <button>Save</button>
+          <button className="button">Save</button>
         </form>
       </Modal>
     )
