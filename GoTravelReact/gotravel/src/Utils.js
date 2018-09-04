@@ -1,11 +1,13 @@
 import moment from 'moment';
 
 const hourFormatter = new Intl.DateTimeFormat('en-GB', { 
+  timeZone: 'UTC',
   hour: '2-digit', 
   minute: '2-digit' 
 })
 
 const fullFormatter = new Intl.DateTimeFormat('en-GB', { 
+  timeZone: 'UTC',
   hour: '2-digit', 
   minute: '2-digit',
   year: '2-digit',
@@ -14,6 +16,7 @@ const fullFormatter = new Intl.DateTimeFormat('en-GB', {
 })
 
 const dayFormatter = new Intl.DateTimeFormat('en-GB', { 
+  timeZone: 'UTC',
   weekday: 'short',
   month: '2-digit', 
   day: '2-digit' 

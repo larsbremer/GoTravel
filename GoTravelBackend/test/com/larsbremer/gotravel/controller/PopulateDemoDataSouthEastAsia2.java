@@ -1,7 +1,6 @@
 package com.larsbremer.gotravel.controller;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 import com.larsbremer.gotravel.model.Accommodation;
@@ -12,7 +11,7 @@ import com.larsbremer.gotravel.model.Location;
 import com.larsbremer.gotravel.model.TrainRide;
 import com.larsbremer.gotravel.model.Trip;
 
-public class PopulateDemoDataSouthEastAsia {
+public class PopulateDemoDataSouthEastAsia2 {
 
 	private static TripController tripController = new TripController();
 
@@ -40,7 +39,6 @@ public class PopulateDemoDataSouthEastAsia {
 		Location luangprabang = createLocation("Luang Prabang", "Laos");
 		Location thakhek = createLocation("Thakhek", "Laos");
 		Location dondet = createLocation("Don Det", "Laos");
-		Location pakse = createLocation("Pakse", "Laos");
 
 		// Acccommodation
 //		String url = "https://secure.booking.com/myreservations.html?aid=304142;label=gen173nr-1DCAEoggJCAlhYSDNiBW5vcmVmaIkBiAEBmAEHuAEHyAEN2AED6AEBkgIBeagCAw;sid=843d82863c6586b1e75a5583e8cb45c2;auth_key=r5UBuUl3VYXp2wDF&";
@@ -55,37 +53,39 @@ public class PopulateDemoDataSouthEastAsia {
 		System.out.println(createFlight(createdTrip.getId(), "Air France", "AF-0166", null, null, "Boeing 777-200",
 				paris, createDate(2018, 10, 12, 16, 05), bangkok, createDate(2018, 10, 13, 8, 20)));
 
-		System.out.println(
-				createTrainRide(createdTrip.getId(), "Mainline Train", "25", bangkok, createDate(2018, 10, 14, 20, 0),
-						nongkhai, createDate(2018, 10, 15, 6, 45), "Booked via 12go.asia", null, "2-09, 2-10"));
+		System.out.println(createFlight(createdTrip.getId(), "Bangkok Airways", null, null, null, null, bangkok,
+				createDate(2018, 10, 13, 14, 40), luangprabang, createDate(2018, 10, 13, 16, 50)));
 
-		System.out.println(
-				createTrainRide(createdTrip.getId(), "Shuttle Train", null, nongkhai, createDate(2018, 10, 15, 7, 30),
-						thanaleng, createDate(2018, 10, 15, 7, 45), "To book at Nong Khai", null, null));
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 14, 8, 0),
+				createDate(2018, 10, 14, 22, 00), "Relaxing."));
 
-		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 15, 8, 15),
-				createDate(2018, 10, 15, 10, 00), "Bus to Vientiane"));
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 15, 8, 30),
+				createDate(2018, 10, 15, 19, 00), "Kayaking to Pak Ou Caves (greendiscoverylaos.com)"));
 
-		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", null, null, null, null, vientiane,
-				createDate(2018, 10, 16, 9, 10), luangprabang, createDate(2018, 10, 16, 10, 0)));
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 16, 8, 0),
+				createDate(2018, 10, 16, 14, 00), "Excursion to Tat Kuang Si Waterfalls"));
 
-		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 16, 11, 0),
-				createDate(2018, 10, 16, 22, 00), "Relaxing."));
+		System.out.println(createBusRide(createdTrip.getId(), null, null, null, luangprabang,
+				createDate(2018, 10, 17, 9, 0), vientiane, createDate(2018, 10, 17, 19, 0)));
 
-		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 17, 8, 30),
-				createDate(2018, 10, 17, 19, 00), "Kayaking to Pak Ou Caves (greendiscoverylaos.com)"));
+		System.out.println(createBusRide(createdTrip.getId(), null, null, null, vientiane,
+				createDate(2018, 10, 19, 8, 0), thakhek, createDate(2018, 10, 19, 12, 0)));
 
-		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 18, 8, 0),
-				createDate(2018, 10, 18, 14, 00), "Excursion to Tat Kuang Si Waterfalls"));
+		int theloopDay1 = 20;
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, theloopDay1, 8, 0),
+				createDate(2018, 10, theloopDay1, 20, 00), "The Loop Day 1"));
 
-		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", null, null, null, null, luangprabang,
-				createDate(2018, 10, 19, 10, 40), pakse, createDate(2018, 10, 19, 12, 20)));
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, theloopDay1 + 1, 8, 0),
+				createDate(2018, 10, theloopDay1 + 1, 20, 00), "The Loop Day 2"));
 
-		System.out.println(createBusRide(createdTrip.getId(), null, null, null, thakhek, createDate(2018, 10, 22, 8, 0),
-				dondet, createDate(2018, 10, 22, 19, 0)));
+		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, theloopDay1 + 2, 8, 0),
+				createDate(2018, 10, theloopDay1 + 2, 20, 00), "The Loop Day 3"));
 
-		System.out.println(createBusRide(createdTrip.getId(), null, null, null, dondet, createDate(2018, 10, 25, 8, 0),
-				siemriep, createDate(2018, 10, 25, 19, 0)));
+		System.out.println(createBusRide(createdTrip.getId(), null, null, null, thakhek, createDate(2018, 10, 23, 8, 0),
+				dondet, createDate(2018, 10, 23, 19, 0)));
+
+		System.out.println(createBusRide(createdTrip.getId(), null, null, null, dondet, createDate(2018, 10, 26, 8, 0),
+				siemriep, createDate(2018, 10, 26, 19, 0)));
 
 		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 27, 8, 0),
 				createDate(2018, 10, 27, 8, 00), "Angkor"));
@@ -134,7 +134,7 @@ public class PopulateDemoDataSouthEastAsia {
 	private static Trip createTrip(Calendar startDate, Calendar endDate) {
 
 		Trip trip = new Trip();
-		trip.setName("Laos/Cambodia Trip " + new Date());
+		trip.setName("Laos/Cambodia Trip");
 		trip.setStartDate(startDate);
 		trip.setEndDate(endDate);
 
@@ -158,7 +158,7 @@ public class PopulateDemoDataSouthEastAsia {
 	}
 
 	private static TrainRide createTrainRide(String tripId, String name, String number, Location startLocation,
-			Calendar startDate, Location endLocation, Calendar endDate, String note, String url, String seatNumber) {
+			Calendar startDate, Location endLocation, Calendar endDate) {
 
 		TrainRide trainRide = new TrainRide();
 		trainRide.setNumber(number);
@@ -168,9 +168,6 @@ public class PopulateDemoDataSouthEastAsia {
 		trainRide.setDepartureLocation(startLocation);
 		trainRide.setEndDate(endDate);
 		trainRide.setArrivalLocation(endLocation);
-		trainRide.setNote(note);
-		trainRide.setUrl(url);
-		trainRide.setSeatNumber(seatNumber);
 
 		TrainRide createdTrainRide = tripController.createTrainRide(trainRide);
 		return createdTrainRide;

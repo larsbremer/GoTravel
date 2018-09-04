@@ -51,7 +51,8 @@ class Trip extends Component {
       }
     }
 
-    if (startDate === endDate) {
+    if (segment.startDateObj.isSame(segment.endDateObj, 'd')) {
+      console.log("same")
       return [ startDate ];
     }
 
@@ -121,7 +122,7 @@ class Trip extends Component {
     var displayedAttributes = {
       "flight" : [ "seat", "airplane", "url" ],
       "busride" : [ "number", "url" ],
-      "trainride" : [ "url" ],
+      "trainride" : [ "url", "seatNumber", "note" ],
       "accommodation" : [ "url" ]
     }
 
@@ -133,7 +134,9 @@ class Trip extends Component {
       "url" : "URL",
       "trainride" : "Train Ride",
       "busride" : "Bus Ride",
-      "number" : "Number"
+      "number" : "Number",
+      "note" : "Note",
+      "seatNumber" : "Seat"
     }
 
     // Create map of properties
@@ -287,7 +290,7 @@ class Trip extends Component {
 
   printDateColumn(day, dayIndex, segmentIndexInDay){
     if(segmentIndexInDay === 0){
-      
+
       var dateString = day[0];
       if(day.length === 2){
         dateString = dateString + " - " + day[1];

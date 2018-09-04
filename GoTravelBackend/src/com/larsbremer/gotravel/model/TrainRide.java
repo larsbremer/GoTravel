@@ -4,6 +4,7 @@ public class TrainRide extends Transportation {
 
 	private String number;
 	private String name;
+	private String seatNumber;
 
 	public String getName() {
 		return name;
@@ -19,6 +20,14 @@ public class TrainRide extends Transportation {
 
 	public void setNumber(String number) {
 		this.number = number;
+	}
+
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
 	}
 
 	@Override
