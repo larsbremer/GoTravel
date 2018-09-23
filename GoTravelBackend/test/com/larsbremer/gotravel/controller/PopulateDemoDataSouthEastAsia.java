@@ -66,8 +66,13 @@ public class PopulateDemoDataSouthEastAsia {
 		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 15, 8, 15),
 				createDate(2018, 10, 15, 10, 00), "Bus to Vientiane"));
 
-		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", null, null, null, null, vientiane,
-				createDate(2018, 10, 16, 9, 10), luangprabang, createDate(2018, 10, 16, 10, 0)));
+		System.out.println(createAccommodation(createdTrip.getId(), "VKS Hotel", vientiane,
+				"https://www.booking.com/hotel/la/vong-kham-sene.html", createDate(2018, 10, 15, 14, 0),
+				createDate(2018, 10, 16, 12, 00)));
+
+		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", "QV101", null,
+				"http://www.laoairlines.com/?contentkey=reservationsPrint&pnr=ZWBBZM&name=Kong&action=printPreview&nr=true",
+				"A320", vientiane, createDate(2018, 10, 16, 11, 30), luangprabang, createDate(2018, 10, 16, 12, 15)));
 
 		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 16, 11, 0),
 				createDate(2018, 10, 16, 22, 00), "Relaxing."));
@@ -78,8 +83,9 @@ public class PopulateDemoDataSouthEastAsia {
 		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 18, 8, 0),
 				createDate(2018, 10, 18, 14, 00), "Excursion to Tat Kuang Si Waterfalls"));
 
-		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", null, null, null, null, luangprabang,
-				createDate(2018, 10, 19, 10, 40), pakse, createDate(2018, 10, 19, 12, 20)));
+		System.out.println(createFlight(createdTrip.getId(), "Lao Airlines", "QV513", null,
+				"http://www.laoairlines.com/?contentkey=reservationsPrint&pnr=ZXDFMC&name=Kong&action=printPreview&nr=true",
+				"AT7", luangprabang, createDate(2018, 10, 19, 10, 40), pakse, createDate(2018, 10, 19, 12, 20)));
 
 		System.out.println(createBusRide(createdTrip.getId(), null, null, null, thakhek, createDate(2018, 10, 22, 8, 0),
 				dondet, createDate(2018, 10, 22, 19, 0)));
@@ -93,8 +99,9 @@ public class PopulateDemoDataSouthEastAsia {
 		System.out.println(createActivity(createdTrip.getId(), createDate(2018, 10, 28, 8, 0),
 				createDate(2018, 10, 28, 20, 00), "Phyllis Flight to HK"));
 
-		System.out.println(createFlight(createdTrip.getId(), "Hong Kong Express", null, null, null, null, siemriep,
-				createDate(2018, 10, 29, 11, 15), hongkong, createDate(2018, 10, 29, 14, 40)));
+		System.out.println(createFlight(createdTrip.getId(), "Hong Kong Express", "UO707", null,
+				"https://www.kiwi.com/en/manage/10230451?utm_campaign=confirmed&utm_medium=email&utm_content=de", null,
+				siemriep, createDate(2018, 10, 30, 18, 45), hongkong, createDate(2018, 10, 30, 22, 20)));
 
 		System.out.println(createFlight(createdTrip.getId(), "KLM", "KL-0888", null, null, "Boeing 747-400", hongkong,
 				createDate(2018, 11, 2, 13, 35), amsterdam, createDate(2018, 11, 2, 19, 5)));
